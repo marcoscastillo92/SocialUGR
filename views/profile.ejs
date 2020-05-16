@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="../scripts/script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="stylesheet" href="../css/feed.css">
-    <title>Perfil - usuario</title>
+    <title>SocialUGR</title>
 </head>
 <body>
-    <div id="portada">
-        <img src="../imgs/paisaje.jpg" alt="imagen de portada">
-    </div>
-    <div id="contenedor">
+    <div class="contenedor">
         <header>
             <div id="cabecera">
                 <div id="logo">
@@ -20,11 +18,6 @@
                 </div>
                 <nav>
                     <div id="menu">
-                        <!--<ul>
-                            <li><a href="../feed.js">Inicio</a></li>
-                            <li><a href="../feed.js">Perfil</a></li>
-                            <li><a href="../feed.js">Log out</a></li>
-                        </ul>-->
                         <input type="text" name="cuadroBusqueda" id="cuadroBusqueda" onkeypress="sendSearch(event)">
                         <img id="lupa" src="../imgs/lupa_gris.png" alt="Búsqueda" width="15px" onclick="toggleSearch('cuadroBusqueda')"/>
                         <a href="feed">Inicio</a>
@@ -37,6 +30,10 @@
         <div id="fantasma">
             No debe verse
         </div>
+        <div id="portada">
+            <img src="../imgs/paisaje.jpg" alt="imagen de portada">
+        </div>
+    
         <div id="imagenPerfil">
             <img src="../imgs/perfil.jpg" width="200px" alt="Avatar">
         </div>

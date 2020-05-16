@@ -1,0 +1,120 @@
+/*
+Formato del pie
+*/
+footer {
+    color: black;
+    width: 100%;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 1px;
+    padding-bottom: 1em;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+header {
+    width: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/*
+Formato del cuerpo
+*/
+body {
+    margin-bottom: 20%;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-image: url('../imgs/estudiantes.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+aside{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    width: fit-content;
+    padding-left: 15px;
+    margin-left: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    float: left;
+
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 3px solid dodgerblue;
+
+    box-shadow: 0 8px 16px 0 grey;
+}
+
+section{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    width: fit-content;
+    padding-left: 15px;
+    margin-left: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    float: left;
+
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 3px solid dodgerblue;
+
+    box-shadow: 0 8px 16px 0 grey;
+}
+
+#identificacion {
+    font-size: 13px;
+    display: inline-block;
+    width: 200px;
+    margin-right: 60px;
+    text-align: left;
+
+}
+
+#registro {
+    font-size: 13px;
+    display: inline-block;
+    width: 200px;
+    margin-right: 60px;
+    text-align: left;
+}
+
+#logo {
+    width: 10%;
+    height: auto;
+}
+
+.button {
+    background-color: dodgerblue;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: dodgerblue;
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.boton {
+    text-align: center;
+    margin-left: 40px;
+}
+
+.titulo {
+   color: #53abff;
+   font-size: 25px;
+   text-shadow: 2px 1px grey;
+}
+
+section input{
+    margin-top: 5px;
+    padding: 10px;
+}
+
+aside input{
+    margin-top: 5px;
+    padding: 10px;
+}

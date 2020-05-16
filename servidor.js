@@ -5,6 +5,10 @@ const path = require('path')
 
 server.listen(8080);
 
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/html/login.html')
+})
+
 app.get('/feed', function(req, res){
     res.sendFile(__dirname + '/html/feed.html')
 })

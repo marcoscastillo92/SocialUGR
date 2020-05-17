@@ -5,7 +5,8 @@
         </div>
         <div id="feed_info">
             <p id="feed_username"><%= post.username %></p>
-            <p id="feed_date"><%= post.date %></p>
+            <p id="feed_date"><%= post.fecha %>
+            </p>
         </div>
     </div>
 
@@ -21,12 +22,12 @@
             <div class="interaction_section">
                 <img src="../imgs/comment.png" alt="comment" width="35" height="35">
                 <br>
-                <span id="num_comments">54</span>
+                <span id="num_comments"><%= post.comentLong %></span>
             </div>
             <div class="interaction_section">
                 <img src="../imgs/like.png" alt="like" width="35" height="35">
                 <br>
-                <span id="num_likes"><%= post.likes %></span>
+                <span id="num_likes"><%= post.likesLong %></span>
             </div>
         </div>
     </div>

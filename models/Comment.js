@@ -6,8 +6,7 @@ const CommentSchema = new Schema ({
     comment: {type: String, required: true},
     date: {type: Date, default: Date.now },
     idPost: {type: String, required: true},
-    likes: {type: Array},
-    idComment: {type: String, required: true}
+    likes: {type: Array}
 });
 
 module.exports = mongoose.model('Comment', CommentSchema, 'comments');

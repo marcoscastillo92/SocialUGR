@@ -13,4 +13,4 @@ const ProfileSchema = new Schema ({
     landscape: {type: String, default: __dirname + "../imgs/paisaje.png"}
 });
 
-module.exports = mongoose.model('Profile', ProfileSchema);
+module.exports = mongoose.model('Profile', ProfileSchema, 'profiles');

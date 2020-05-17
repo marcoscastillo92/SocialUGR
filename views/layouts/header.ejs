@@ -7,9 +7,9 @@
             <div id="menu">
                 <input type="text" name="cuadroBusqueda" id="cuadroBusqueda" onkeypress="sendSearch(event)">
                 <img id="lupa" src="../imgs/lupa_gris.png" alt="Búsqueda" width="15px" onclick="toggleSearch('cuadroBusqueda')"/>
-                <a href="feed">Inicio</a>
-                <a href="profile">Perfil</a>
-                <a href="login">Log out</a>
+                <a href="/feed">Inicio</a>
+                <a href="/profile/<%= perfil.username %>">Perfil</a>
+                <a href="/login">Log out</a>
             </div>
         </nav>
     </div>

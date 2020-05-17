@@ -17,12 +17,12 @@ function sendSearch(e){
 
 function toggleFollow(e){
     if(e.innerHTML == "Follow"){
+        e.className = "btn btn-danger btn-sm";
         e.innerHTML = "Unfollow";
-        e.style.backgroundColor = "red";
-        //FOLLOW ACTIONS
+        //Acciones de seguir
     }else{
+        e.className = "btn btn-success btn-sm";
         e.innerHTML = "Follow";
-        e.style.backgroundColor = "green";
-        //UNFOLLOW ACTIONS
+        //Acciones de dejar de seguir
     }
 }

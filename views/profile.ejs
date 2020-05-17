@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- BOOTSTRAP 4 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/2158afa4d9.js" crossorigin="anonymous"></script>
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="../public/css/perfil.css">
     <link rel="stylesheet" href="../public/css/feed.css">
     <link rel="shortcut icon" href="#">
-    <title>SocialUGR - <% perfil.name %> <%= perfil.lastName %></title>
+    <title>SocialUGR - <%= perfil.name %> <%= perfil.lastName %></title>
 </head>
 <body>
     <div class="contenedor">
@@ -28,35 +30,31 @@
             No debe verse
         </div>
         <div id="infoFollows">
-            <table>
-                <tr>
-                    <th>
-                        Followers
-                    </th>
-                    <th></th>
-                    <th>
-                        Following
-                    </th>
-                </tr>
-                <tr>
-                    <th>
+            <div class="row justify-content-between">
+                <div class="col-md-5">
+                    <div class="text-center">
+                        Followers<br>
                         <span id="numFollowers"><%= perfil.followers %></span>
-                    </th>
-                    <th></th>
-                    <th>
-                        <span id="numFollowing"><%= perfil.following %></span>
-                    </th>
-                    <th></th>
-                    <th>
-                        <div id="follow" onclick="toggleFollow(this)">
-                            Follow
-                        </div>
-                    </th>
-                </tr>
-            </table>
+                    </div>
+                    
+                </div>
+                <div class="col-md-5">
+                    <div class="text-center">
+                        Following<br>
+                        <span id="numFollowers"><%= perfil.following %></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 d-flex justify-content-center">
+                <button type="button" class="btn btn-success btn-sm" onclick="toggleFollow(this)">Follow</button>
+            </div>
         </div>
         <div id="info2">
-            <span id="bios"><%= perfil.bios %></span>
+            <span id="bios">BIOS <span class="far fa-comment-alt"></span>
+            <div class="float-right d-inline-block">
+               <a href="#"><i class="far fa-edit ml-n1"></i></a>
+            </div>
+            <br><%= perfil.bios %></span>
         </div>
         <div id="bodyPerfil">
             <% posts.forEach(function(post){ %>

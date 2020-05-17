@@ -17,12 +17,19 @@ function sendSearch(e){
 
 function toggleFollow(e){
     if(e.innerHTML == "Follow"){
-        e.className = "btn btn-danger btn-sm";
-        e.innerHTML = "Unfollow";
+        e.style.display = hidden;
+        document.getElementById('unfollow').style.display = visible;
+        //e.className = "btn btn-danger btn-sm";
+        //e.innerHTML = "Unfollow";
         //Acciones de seguir
+        //window.location.href = '/follow/:username/:toUsername';
+        
     }else{
-        e.className = "btn btn-success btn-sm";
-        e.innerHTML = "Follow";
+        e.style.display = hidden;
+        document.getElementById('follow').style.display = visible;
+        //e.className = "btn btn-success btn-sm";
+        //e.innerHTML = "Follow";
         //Acciones de dejar de seguir
+        //window.location.href = '/unfollow/:username/:toUsername';
     }
 }

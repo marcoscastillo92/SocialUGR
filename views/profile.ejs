@@ -46,7 +46,16 @@
                 </div>
             </div>
             <div class="mt-2 d-flex justify-content-center">
-                <button type="button" class="btn btn-success btn-sm" onclick="toggleFollow(this)">Follow</button>
+                <div id="follow">
+                    <form action="/follow/<%= user.username %>/<%= perfil.username %>" method="get">
+                        <button type="submit" class="btn btn-success btn-sm" onclick="toggleFollow(this)" value="submit">Follow</button>
+                    </form>
+                </div>
+                <div id="unfollow">
+                    <form action="/unfollow/<%= user.username %>/<%= perfil.username %>" method="get">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="toggleFollow(this)">Unfollow</button>
+                    </form>
+                </div>
             </div>
         </div>
         <div id="info2">

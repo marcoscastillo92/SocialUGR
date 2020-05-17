@@ -1,0 +1,33 @@
+<div class="bloque">
+    <div id="header">
+        <div id="profile_image">
+            <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
+        </div>
+        <div id="feed_info">
+            <p id="feed_username"><%= post.username %></p>
+            <p id="feed_date"><%= post.date %></p>
+        </div>
+    </div>
+
+    <div id="body">
+        <img src="../imgs/<%= post.image %>" alt="imagen" >
+    </div>
+
+    <div id="footer">
+        <div id="description">
+            <p><%= post.description %></p>
+        </div>
+        <div id="interactions">
+            <div class="interaction_section">
+                <img src="../imgs/comment.png" alt="comment" width="35" height="35">
+                <br>
+                <span id="num_comments">54</span>
+            </div>
+            <div class="interaction_section">
+                <img src="../imgs/like.png" alt="like" width="35" height="35">
+                <br>
+                <span id="num_likes"><%= post.likes %></span>
+            </div>
+        </div>
+    </div>
+</div>

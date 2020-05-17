@@ -3,39 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="../public/scripts/script.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="../public/css/perfil.css">
     <link rel="stylesheet" href="../public/css/feed.css">
-    <title>SocialUGR</title>
+    <link rel="shortcut icon" href="#">
+    <title>SocialUGR - <% perfil.name %> <%= perfil.lastName %></title>
 </head>
 <body>
     <div class="contenedor">
-        <header>
-            <div id="cabecera">
-                <div id="logo">
-                    <a href="feed"><img src="../imgs/logo.png" alt="Logo corporativo" width="100px"/></a>
-                </div>
-                <nav>
-                    <div id="menu">
-                        <input type="text" name="cuadroBusqueda" id="cuadroBusqueda" onkeypress="sendSearch(event)">
-                        <img id="lupa" src="../imgs/lupa_gris.png" alt="Búsqueda" width="15px" onclick="toggleSearch('cuadroBusqueda')"/>
-                        <a href="feed">Inicio</a>
-                        <a href="profile">Perfil</a>
-                        <a href="login">Log out</a>
-                    </div>
-                </nav>
-            </div>
-        </header>
+        <%- include('layouts/header'); %>
         <div id="fantasma">
             No debe verse
         </div>
         <div id="portada">
-            <img src="../imgs/paisaje.jpg" alt="imagen de portada">
+            <img src="../imgs/<%= perfil.landscape %>" alt="imagen de portada">
         </div>
     
         <div id="imagenPerfil">
-            <img src="../imgs/perfil.jpg" width="200px" alt="Avatar">
+            <img src="../imgs/<%= perfil.image %>" width="200px" alt="Avatar">
         </div>
         <div id="fantasma">
             No debe verse
@@ -53,11 +40,11 @@
                 </tr>
                 <tr>
                     <th>
-                        <span id="numFollowers">10</span>
+                        <span id="numFollowers"><%= perfil.followers %></span>
                     </th>
                     <th></th>
                     <th>
-                        <span id="numFollowing">15</span>
+                        <span id="numFollowing"><%= perfil.following %></span>
                     </th>
                     <th></th>
                     <th>
@@ -69,132 +56,19 @@
             </table>
         </div>
         <div id="info2">
-            <span id="bios">Bios eqpfihqpiegqepifqpeog oegoejgòqwegjpweqojgpweq</span>
+            <span id="bios"><%= perfil.bios %></span>
         </div>
         <div id="bodyPerfil">
-            <div class="bloque">
-                <div id="header">
-                    <div id="profile_image">
-                        <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
-                    </div>
-                    <div id="feed_info">
-                        <p id="feed_username">Pepa flores</p>
-                        <p id="feed_date">15 min ago</p>
-                    </div>
-                </div>
-
-                <div id="body">
-                    <img src="../imgs/imagen.jpg" alt="imagen" >
-                </div>
-
-                <div id="footer">
-                    <div id="description">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make a type 
-                            specimen book. It has survived not only five centuries, but also the leap into 
-                            electronic typesetting, remaining essentially unchanged. It was popularised in 
-                            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                            and more recently with desktop publishing software like Aldus PageMaker including 
-                            versions of Lorem Ipsum.</p>
-                    </div>
-                    <div id="interactions">
-                        <div class="interaction_section">
-                            <img src="../imgs/comment.png" alt="comment" width="35" height="35">
-                            <br>
-                            <span id="num_comments">54</span>
-                        </div>
-                        <div class="interaction_section">
-                            <img src="../imgs/like.png" alt="like" width="35" height="35">
-                            <br>
-                            <span id="num_likes">554</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bloque">
-                <div id="header">
-                    <div id="profile_image">
-                        <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
-                    </div>
-                    <div id="feed_info">
-                        <p id="feed_username">Pepa flores</p>
-                        <p id="feed_date">15 min ago</p>
-                    </div>
-                </div>
-
-                <div id="body">
-                    <img src="../imgs/imagen.jpg" alt="imagen" >
-                </div>
-
-                <div id="footer">
-                    <div id="description">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make a type 
-                            specimen book. It has survived not only five centuries, but also the leap into 
-                            electronic typesetting, remaining essentially unchanged. It was popularised in 
-                            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                            and more recently with desktop publishing software like Aldus PageMaker including 
-                            versions of Lorem Ipsum.</p>
-                    </div>
-                    <div id="interactions">
-                        <div class="interaction_section">
-                            <img src="../imgs/comment.png" alt="comment" width="35" height="35">
-                            <br>
-                            <span id="num_comments">54</span>
-                        </div>
-                        <div class="interaction_section">
-                            <img src="../imgs/like.png" alt="like" width="35" height="35">
-                            <br>
-                            <span id="num_likes">554</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bloque">
-                <div id="header">
-                    <div id="profile_image">
-                        <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
-                    </div>
-                    <div id="feed_info">
-                        <p id="feed_username">Pepa flores</p>
-                        <p id="feed_date">15 min ago</p>
-                    </div>
-                </div>
-
-                <div id="body">
-                    <img src="../imgs/imagen.jpg" alt="imagen" >
-                </div>
-
-                <div id="footer">
-                    <div id="description">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make a type 
-                            specimen book. It has survived not only five centuries, but also the leap into 
-                            electronic typesetting, remaining essentially unchanged. It was popularised in 
-                            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                            and more recently with desktop publishing software like Aldus PageMaker including 
-                            versions of Lorem Ipsum.</p>
-                    </div>
-                    <div id="interactions">
-                        <div class="interaction_section">
-                            <img src="../imgs/comment.png" alt="comment" width="35" height="35">
-                            <br>
-                            <span id="num_comments">54</span>
-                        </div>
-                        <div class="interaction_section">
-                            <img src="../../imgs/like.png" alt="like" width="35" height="35">
-                            <br>
-                            <span id="num_likes">554</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <% posts.forEach(function(post){ %>
+                <%- include('partials/post', {post:post}); %>
+            <% }); %>
         </div>
     </div>
+    <!-- Scripts -->
+    <script type="text/javascript" src="../public/scripts/script.js"></script>
+    <!-- Scripts BOOTSTRAP 4-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

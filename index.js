@@ -11,13 +11,6 @@ require('./database');
 //Settings
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
-// app.engine('.hbs', exphbs({
-//     defaultLayout: 'main',
-//     layoutsDir: path.join(app.get('views'), 'layouts'),
-//     partialsDir: path.join(app.get('views'), 'partials'),
-//     extname: '.hbs'
-// }));
-//app.set('view engine', '.hbs');
 app.set('view engine', 'ejs');
 
 //Middlewares
@@ -32,34 +25,13 @@ app.use(session({
 //Global Variables
 
 //Routes
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/public/html/login.html');
-});
-
-app.get('/feed', (req, res) => {
-    res.render('feed');
-    //res.sendFile(__dirname + '/public/html/feed.html');
-});
-
-app.get('/login', function(req, res){
-    res.sendFile(__dirname + '/public/html/login.html');
-});
-
-app.get('/perfil', function(req, res){
-    res.render('profile');
-    //res.sendFile(__dirname + '/public/html/perfil.html');
-});
-
-app.get('/imgs/:imagen', function(req, res){
-    res.sendFile(__dirname + '/imgs/'+req.params.imagen);
-});
-
-app.get('/css/:css', function(req, res){
-    res.sendFile(__dirname + '/public/css/'+req.params.css);
-});
+app.use(require('./routes/index'));
+app.use(require('./routes/profile'));
+app.use(require('./routes/feed'));
 
 //Static Files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("/public",express.static(__dirname + "/public"));
+app.use("/imgs",express.static(__dirname + "/imgs"));
 
 //Server init
 app.listen(app.get('port'), () =>{

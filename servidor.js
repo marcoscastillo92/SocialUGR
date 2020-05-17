@@ -3,7 +3,10 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient;
+<<<<<<< HEAD
 
+=======
+>>>>>>> perfil
 
 
 app.get('/', function(req, res){
@@ -34,6 +37,7 @@ const uri = "mongodb://localhost:27017/";
 MongoClient.connect(uri, function(err, db) {
 	server.listen(8080);
 	var dbo = db.db("socialugr");
+<<<<<<< HEAD
 	dbo.createCollection("test", function(err, collection){
     	io.sockets.on('connection',
       function(client) {
@@ -49,6 +53,8 @@ MongoClient.connect(uri, function(err, db) {
         });
       });
     });
+=======
+>>>>>>> perfil
 });
 
 console.log("Servicio Socket.io iniciado");

@@ -20,8 +20,46 @@
             <p>Registrate</p>
         </div>
 
+        <% if (nameMessage) { %>
+            <div class="mensajeError">
+                <%= nameMessage %>
+            </div><br>
+        <% } %>
+
+        <% if (lastNameMessage) { %>
+        <div class="mensajeError">
+            <%= lastNameMessage %>
+        </div><br>
+        <% } %>
+
+        <% if (usernameMessage) { %>
+        <div class="mensajeError">
+            <%= usernameMessage %>
+        </div><br>
+        <% } %>
+
+        <% if (birthDateMessage) { %>
+        <div class="mensajeError">
+            <%= birthDateMessage %>
+        </div><br>
+        <% } %>
+
+        <% if (genderMessage) { %>
+        <div class="mensajeError">
+            <%= genderMessage %>
+        </div><br>
+        <% } %>
+
+        <% if (emailMessage) { %>
+        <div class="mensajeError">
+            <%= emailMessage %>
+        </div><br>
+        <% } %>
+
         <% if (signupMessage.length > 0) { %>
-        <% signupMessage %>
+            <div class="mensajeError">
+                <%= signupMessage %>
+            </div><br>
         <% } %>
 
         <form id="registro" action="/signup" method="post">
@@ -38,9 +76,10 @@
             <input type="date" name="birthDate">
             <br /><br />
             Género:
-            <select id="genero">
-                <option value="masculino">Masculino</option>
-                <option value="femenino">Femenino</option>
+            <select name="gender">
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
+                <option value="other">Otro</option>
             </select><br /><br />
             <label for="email">Correo electronico</label>
             <input type="email" name="email" placeholder="Introduce tu correo">
@@ -51,7 +90,7 @@
             Mostrar Contraseña <input type="checkbox" onclick="OcultarPasswdR()">
             <br /><br />
             <div class="boton">
-                <input type="submit" class="button" value="Registrar">
+                <input type="submit" formaction="/perfilNuevo" class="button" value="Registrar">
             </div>
         </form><br />
     </aside>
@@ -61,9 +100,10 @@
         </div>
 
         <% if (loginMessage.length > 0) { %>
-        <% loginMessage %>
+            <div class="mensajeError">
+                <%= loginMessage %>
+            </div><br>
         <% } %>
-
 
         <form id="identificacion" action="/login" method="post">
             <label for="username">Usuario</label>

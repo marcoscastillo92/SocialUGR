@@ -6,9 +6,11 @@ const profileSchema = new mongoose.Schema({
     lastName: String,
     birthDate: Date,
     bios: String,
+    gender: String,
     following: Array,
     followers: Array,
     username: String,
+    email: String,
     image: String
 });
 

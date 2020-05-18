@@ -16,7 +16,7 @@ passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
-}, async (req, username, password, name, lastName, birthDate, done) => {
+}, async (req, username, password, done) => {
     const user = await User.findOne({username: username});
 
     if (user) {
@@ -37,16 +37,12 @@ passport.use('local-login', new LocalStrategy({
     passReqToCallback: true
 }, async (req, username, password, done) => {
     const user = await User.findOne({ username: username });
-    //const user = busca[0];
-    console.log(user);
+    
     if (!user) {
-        console.log(1);
         return done(null, false, req.flash('loginMessage', 'El usuario no existe'));
     }
     if (!user.validaPassword(password)) {
-        console.log(2);
         return done(null, false, req.flash('loginMessage', 'La contraseña es incorrecta'));
     }
-    console.log(3);
     done(null, user);
 }));

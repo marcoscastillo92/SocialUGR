@@ -24,21 +24,3 @@ function OcultarPasswdR() {
     x.type = "password";
   }
 }
-
-var serviceURL = document.URL;
-
-function EnviarIdentificacion(){
-var usuario = document.getElementById("usuario").value;
-var correo = document.getElementById("correo").value;
-var password = document.getElementById("passwordI").value;
-
-var httpRequest = new XMLHttpRequest();
-httpRequest.onreadystatechange = function() {
-	if( httpRequest.readyState === 4 ){
-		var resultado = document.getElementById ("resul");
-		resultado.innerHTML = httpRequest.responseText;
-	}
-};
-httpRequest.open("GET", serviceURL, true);
-httpRequest.send(null);
-}

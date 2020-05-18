@@ -109,6 +109,15 @@ section{
    text-shadow: 2px 1px grey;
 }
 
+.mensajeError {
+    border-radius: 10px;
+    padding: 0.3em;
+    color: #D8000C;
+    background-color: #FFD2D2;
+    box-shadow:1px 1px 3px #888;
+    width: fit-content;
+}
+
 section input{
     margin-top: 5px;
     padding: 10px;

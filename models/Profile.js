@@ -9,6 +9,8 @@ const ProfileSchema = new Schema ({
     bios: {type: String},
     following: {type: Array},
     followers: {type: Array},
+    email: {type: String},
+    gender: {type: String},
     image: {type: String, default: __dirname + "../imgs/perfil.png"},
     landscape: {type: String, default: __dirname + "../imgs/paisaje.png"}
 });

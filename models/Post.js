@@ -10,7 +10,7 @@ const PostSchema = new Schema ({
     image: {type: String, required: true},
     likesLong: {type: Number},
     comentLong: {type: Number},
-    comentarios: {type: Object}
+    comentarios: {type: Array}
 });
 
 module.exports = mongoose.model('Post', PostSchema, 'posts');

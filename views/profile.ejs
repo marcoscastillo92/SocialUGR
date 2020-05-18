@@ -34,21 +34,21 @@
                 <div class="col-md-5">
                     <div class="text-center">
                         Followers<br>
-                        <span id="numFollowers"><%= perfil.followers %></span>
+                        <span id="numFollowers"><%= perfil.followers.length %></span>
                     </div>
                     
                 </div>
                 <div class="col-md-5">
                     <div class="text-center">
                         Following<br>
-                        <span id="numFollowers"><%= perfil.following %></span>
+                        <span id="numFollowers"><%= perfil.following.length %></span>
                     </div>
                 </div>
             </div>
             <div class="mt-2 d-flex justify-content-center">
                 <div id="follow">
                     <form action="/follow/<%= user.username %>/<%= perfil.username %>" method="get">
-                        <button type="submit" class="btn btn-success btn-sm" onclick="toggleFollow(this)" value="submit">Follow</button>
+                        <button type="submit" class="btn btn-success btn-sm" onclick="toggleFollow(this)">Follow</button>
                     </form>
                 </div>
                 <div id="unfollow">

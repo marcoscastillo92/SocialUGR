@@ -76,7 +76,6 @@ router.post('/perfilNuevo', async (req, res) => {
     else{
         const newProfile = new Perfil({ name, lastName, birthDate, gender, username, email });
         await newProfile.save();
-        console.log(newProfile);
         res.redirect(307, '/signup');
     }
 });
@@ -92,7 +91,7 @@ function isLoggedIn(req, res, next) {
     }
     return res.redirect('/');
 }
-
+/*
 router.get('/feed', isLoggedIn, (req, res, next) => {
     res.render('feed', {
         user: req.user
@@ -103,6 +102,14 @@ router.get('/perfil', isLoggedIn, (req, res, next) => {
     res.render('perfil', {
         user: req.user
     });
+});*/
+
+router.get('/feed', isLoggedIn, (req, res, next) => {
+    res.redirect('/feed/' + req.user.username);
+});
+
+router.get('/profile', isLoggedIn, (req, res, next) => {
+    res.redirect('/profile/' + req.user.username);
 });
 
 module.exports = router;

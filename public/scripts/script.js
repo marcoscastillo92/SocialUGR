@@ -12,6 +12,7 @@ function sendSearch(e){
         var value = document.getElementById("cuadroBusqueda").value;
         console.log(value);
         //Consulta MONGODB para busqueda de usuarios
+        /profile/value
     }
 }
 

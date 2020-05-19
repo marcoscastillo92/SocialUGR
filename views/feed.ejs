@@ -4,113 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="../public/scripts/script.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="../public/css/perfil.css">
     <link rel="stylesheet" href="../public/css/feed.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../public/scripts/feed.js"></script>
     <title>SocialUGR</title>
 </head>
 <body>
     <div class="contenedor">
-        <header>
-            <div id="cabecera">
-                <div id="logo">
-                    <a href="feed"><img src="../imgs/logo.png" alt="Logo corporativo" width="100px"/></a>
-                </div>
-                <nav>
-                    <div id="menu">
-                        <input type="text" name="cuadroBusqueda" id="cuadroBusqueda" onkeypress="sendSearch(event)">
-                        <img id="lupa" src="../imgs/lupa_gris.png" alt="Búsqueda" width="15px" onclick="toggleSearch('cuadroBusqueda')"/>
-                        <a href="feed">Inicio</a>
-                        <a href="profile">Perfil</a>
-                        <a href="login">Log out</a>
-                    </div>
-                </nav>
-            </div>
-        </header>
+        <%- include('layouts/header'); %>
         <div id="fantasma">
             No debe verse
         </div>
-        <div class="bloque">
-            <div id="header">
-                <div id="profile_image">
-                    <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
-                </div>
-                <div id="feed_info">
-                    <p id="feed_username">Pepa flores</p>
-                    <p id="feed_date">15 min ago</p>
-                </div>
-            </div>
-
-            <div id="body">
-                <img src="../imgs/imagen.jpg" alt="imagen" >
-            </div>
-
-            <div id="footer">
-                <div id="description">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived not only five centuries, but also the leap into 
-                        electronic typesetting, remaining essentially unchanged. It was popularised in 
-                        the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                        and more recently with desktop publishing software like Aldus PageMaker including 
-                        versions of Lorem Ipsum.</p>
-                </div>
-                <div id="interactions">
-                    <div class="interaction_section">
-                        <img src="../imgs/comment.png" alt="comment" width="35" height="35">
-                        <br>
-                        <span id="num_comments">54</span>
-                    </div>
-                    <div class="interaction_section">
-                        <img src="../imgs/like.png" alt="like" width="35" height="35">
-                        <br>
-                        <span id="num_likes">554</span>
-                    </div>
-                </div>
-            </div>
+        <div id="crear_post_container">
+            <button class="button" onclick="showCreatePostText()">
+                Nuevo Post Textual
+            </button>
+            <button class="button" onclick="showCreatePostMultimedia()">
+                Nuevo Post Multimedia
+            </button>
         </div>
-
-        <div class="bloque">
-            <div id="header">
-                <div id="profile_image">
-                    <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
-                </div>
-                <div id="feed_info">
-                    <p id="feed_username">Pepa flores</p>
-                    <p id="feed_date">15 min ago</p>
-                </div>
-            </div>
-
-            <div id="body">
-                <img src="../imgs/imagen.jpg" alt="imagen" >
-            </div>
-
-            <div id="footer">
-                <div id="description">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived not only five centuries, but also the leap into 
-                        electronic typesetting, remaining essentially unchanged. It was popularised in 
-                        the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                        and more recently with desktop publishing software like Aldus PageMaker including 
-                        versions of Lorem Ipsum.</p>
-                </div>
-                <div id="interactions">
-                    <div class="interaction_section">
-                        <img src="../imgs/comment.png" alt="comment" width="35" height="35">
-                        <br>
-                        <span id="num_comments">54</span>
-                    </div>
-                    <div class="interaction_section">
-                        <img src="../imgs/like.png" alt="like" width="35" height="35">
-                        <br>
-                        <span id="num_likes">554</span>
-                    </div>
-                </div>
-            </div>
+        <br>
+        <div id="new_post_container">
+            <div id="post_title">Nuevo Post Textual</div>
+            <hr class="separador">
+            <form id="post_form" action="/subir-post" method="POST"">
+                <span><textarea name="description" id="description_t" cols="100" rows="10" placeholder="Cuéntale algo a tus amigos!"></textarea></span>
+                <br><br> 
+                <input type="hidden" name="username" value="PEPE">
+                <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
+            </form>
         </div>
+        <div id="new_post_container_multimedia">
+            <div id="post_title">Nuevo Post Multimedia</div>
+            <hr class="separador">
+            <form id="post_form" action="/subir-post-multimedia" method="POST" enctype="multipart/form-data">
+                <span><textarea name="description" id="description_m" cols="100" rows="10" placeholder="Cuéntale algo a tus amigos!"></textarea></span>
+                <!-- <button class="button" id="bt_send_post" onclick="checkpostStatus()">Envia Comentario</button> -->
+                <br><br> 
+                Añade una imagen: <br>
+                <input type="file" name="post-image" class="button"><br>
+                <input type="hidden" name="username" value="PEPE">
+                <br>
+                <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
+            </form>
+        </div>
+            <% posts.forEach(function(post){ %>
+                <div class="bloque">
+                    <div id="header">
+                        <div id="profile_image">
+                            <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
+                        </div>
+                        <div id="feed_info">
+                            <p id="feed_username"><strong><%= post.username %></strong>  </p>
+                            <!--
+                                <%
+                                    function timeDifference(current, previous) {
+
+                                    var msPerMinute = 60 * 1000;
+                                    var msPerHour = msPerMinute * 60;
+                                    var msPerDay = msPerHour * 24;
+                                    var msPerMonth = msPerDay * 30;
+                                    var msPerYear = msPerDay * 365;
+
+                                    var elapsed = current - previous;
+
+                                    if (elapsed < msPerMinute) {
+                                        return 'Hace '+Math.round(elapsed/1000) + ' segundos';   
+                                    }
+
+                                    else if (elapsed < msPerHour) {
+                                        return 'Hace ' + Math.round(elapsed/msPerMinute) + ' minutos';   
+                                    }
+
+                                    else if (elapsed < msPerDay ) {
+                                        return 'Hace ' + Math.round(elapsed/msPerHour ) + ' Horas';   
+                                    }
+
+                                    else if (elapsed < msPerMonth) {
+                                        return 'Aproximadamente hace ' + Math.round(elapsed/msPerDay) + ' días';   
+                                    }
+
+                                    else if (elapsed < msPerYear) {
+                                        return 'Aproximadamente hace ' + Math.round(elapsed/msPerMonth) + ' meses';   
+                                    }
+
+                                    else {
+                                        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
+                                    }
+                                }
+                                %>
+                                <% var now = new Date();%>
+                                <% var saved = post.date;%>
+                                <% var date = timeDifference(now.getTime(), saved.getTime())%>
+                             -->
+                            <p id="feed_date"><em><%- date %></em></p>
+                        </div>
+                    </div>
+                    <%if (post.type == "image"){%>
+                    <div id="body">
+                        <img src="<%= post.image %>" alt="imagen" >
+                    </div>
+                    <%}%>
+        
+                    <div id="footer">
+                        <div id="description">
+                            <p><%= post.description %></p>
+                        </div>
+                        <div class="interactions_div">
+                            <div class="interaction_section">
+                                <form action="/" method="post" class="image_comment_form"">
+                                    <input type="hidden" name="idCommentContainer" id="idCommentContainer" value="comments_container_<%= post.idPost%>">
+                                    <input type="image" src="../imgs/comment.png" alt="Submit Form" width="35" height="35" id="image_comment_form_<%= post.idPost%>"/>
+                                </form>
+                                <span><p id="num_comments_<%= post.idPost %>"><%= post.comments.length %> Comentarios</p></span>
+                            </div>
+                            <div class="interaction_section">
+                                <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
+                                <input type="hidden" name="username" id="username" value="<%= username%>">
+                                <% var src = "../imgs/like.png"; %>
+                                <% post.likes.forEach(function(like){ %>
+                                    <% if (like.username == username){ %>
+                                        <% src = "../imgs/heart.png";%>
+                                    <%}else{%>
+                                        <% src = "../imgs/like.png";%>
+                                    <%}%>
+                                <%  });%>
+                                <form action="/subir-like" method="post" class="like_form"">
+                                    <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
+                                    <input type="hidden" name="username" id="username" value="<%= username%>">
+                                    <input type="hidden" name="idForm" id="idForm" value="form_<%= post.idPost%>">
+                                    <% if (src == "../imgs/heart.png"){ %>
+                                        <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/eliminar-like">
+                                    <%}else{%>
+                                        <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/subir-like">
+                                    <%}%>
+                                    <input type="image" src="<%- src %>" alt="Submit Form" width="35" height="35" id="form_<%= post.idPost%>"/>
+                                </form>
+                                <span ><p id="num_likes_<%= post.idPost%>"><%= post.likes.length %> Me gusta</p></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="comments_container_<%= post.idPost%>" class="comments_div">
+                        <div id="comment_title">Comentarios</div>
+                        <hr class="separador">
+                        <% var idLastComment="0";%>
+                        <% post.comments.forEach(function(comment) {%>
+                            <div id="comments_section_<%= comment.idComment %>" class="comments_section">
+                                <!--NO BORRAR <%- idLastComment =  comment.idComment %> --> 
+                                <!-- 
+                                    <% var now = new Date();%>
+                                    <% var saved = comment.date;%>
+                                    <% var dateComment = timeDifference(now.getTime(), saved.getTime())%>
+                                 -->
+                                <p><strong><%= comment.username %>: </strong> <%= comment.comment %><br><span id="date"><em><%- dateComment %></em></span></p> 
+                            </div>
+                        <%});%>
+                        <%if (post.comments.length == 0){%>
+                            <div id="comments_section_0" class="comments_section">
+                            </div>
+                        <%}%>
+                        <form action="/subir-comentario" method="POST" class="new_comment_form">
+                            <input type="text" name="comment" id="text_comment_<%= post.idPost %>" class="text_area_comment"placeholder="Escribe un comentario..." required>
+                            <input type="hidden" name="idPost" value="<%= post.idPost %>">
+                            <input type="hidden" name="username" value="<%= username %>">
+                            <input type="hidden" name="idLastComment" value="comments_section_<%- idLastComment %>">
+                            <input type="image" src="../imgs/send.png" alt="Submit Form" id="button_send_comment" value="Send" width="45" height="45">
+                        </form>
+                    </div>
+                </div>
+            <% }); %>
     </div>
 </body>
 </html>

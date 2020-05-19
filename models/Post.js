@@ -7,7 +7,9 @@ const PostSchema = new Schema ({
     date: {type: Date, default: Date.now },
     idPost: {type: String, required: true},
     likes: {type: Array},
-    image: {type: String, required: true}
+    comments: {type:Array},
+    image: {type: String, required: true},
+    type: {type:String, required: true}
 });
 
 module.exports = mongoose.model('Post', PostSchema);

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 router.get('/', function(req, res){
-    res.sendFile(__dirname + '/public/html/login.html');
+    res.sendFile(__dirname + '/../public/html/login.html');
 });
 
 router.get('/feed', (req, res) => {

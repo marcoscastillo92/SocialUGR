@@ -35,26 +35,22 @@ router.get('/profile-add', async function(req, res){
 router.get('/follow/:username/:toUsername', async function(req, res){
     var to = req.params.toUsername;
     var from = req.params.username;
-    const perfilPropio = await Profile.findOne({username: req.params.username}, function(err, doc){
-        doc.following.push(to)
-        doc.save();
-        //console.log("PROPIO: "+JSON.stringify(doc.following));
-    });
-    const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
-        doc.followers.push(from);
-        doc.save();
-        //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
-    });
-    // const perfilPropio = await Profile.findOne({username: req.params.username});
-    // perfilPropio.following = {...perfilPropio.following, to };
-    // perfilPropio.save();
-    // console.log("PROPIO: "+JSON.stringify(perfilPropio.following));
-
-    // const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
-    //     doc.followers = {...doc.followers, from};
-    //     doc.save();
-    //     console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
-    // });
+    if(to != from){
+        const perfilPropio = await Profile.findOne({username: req.params.username}, function(err, doc){
+            if(doc.following.indexOf(to) == -1){
+                doc.following.push(to)
+                doc.save();
+            }
+            //console.log("PROPIO: "+JSON.stringify(doc.following));
+        });
+        const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
+            if(doc.followers.indexOf(from) == -1){
+                doc.followers.push(from);
+                doc.save();
+            }
+            //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
+        });
+    }
     
     res.redirect('/profile/'+to);
 });
@@ -62,24 +58,51 @@ router.get('/follow/:username/:toUsername', async function(req, res){
 router.get('/unfollow/:username/:toUsername', async function(req, res){
     var to = req.params.toUsername;
     var from = req.params.username;
-    const perfilPropio = await Profile.findOne({username: req.params.username}, function(err, doc,){
-        var index = doc.following.indexOf(to);
-        if(index != -1){
-            doc.following.splice(index, 1);
-            //console.log("PROPIO: "+JSON.stringify(doc.following));
-            doc.save();
-        }
-    });
-    const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
-        var index = doc.followers.indexOf(from)
-        if(index != -1){
-            doc.followers.splice(index,1);
-            //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
-            doc.save();
-        }
-    });
+    if(to != from){
+        const perfilPropio = await Profile.findOne({username: req.params.username}, function(err, doc,){
+            var index = doc.following.indexOf(to);
+            if(index != -1){
+                doc.following.splice(index, 1);
+                //console.log("PROPIO: "+JSON.stringify(doc.following));
+                doc.save();
+            }
+        });
+        const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
+            var index = doc.followers.indexOf(from)
+            if(index != -1){
+                doc.followers.splice(index,1);
+                //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
+                doc.save();
+            }
+        });
+    }
 
     res.redirect('/profile/'+to);
 });
+
+router.post('/mod-profile/:username', async function (req, res) {
+    console.log("MODIFICA PERFIL\n"+JSON.stringify(req.body))
+    const perfil = await Profile.findOne({username: req.params.username});
+    if((req.body.imagenPerfilField != perfil.image) && req.body.imagenPerfilField){
+        perfil.image = req.body.imagenPerfilField;
+    }
+    if((!req.body.nameField != perfil.name) && req.body.nameField){
+        perfil.name = req.body.nameField;
+    }
+    if((!req.body.lastnameField != perfil.lastName) && req.body.lastnameField){
+        perfil.lastName = req.body.lastnameField;
+    }
+    // if((!req.body.genderField != perfil.gender) && req.body.genderField){
+    //     perfil.gender = req.body.genderField;
+    // }
+    if((!req.body.imagenPortadaField != perfil.landscape) && req.body.imagenPortadaField){
+        perfil.landscape = req.body.imagenPortadaField;
+    }
+    if((!req.body.biosField != perfil.bios) && req.body.biosField){
+        perfil.bios = req.body.biosField;
+    }
+    await perfil.save();
+    res.redirect('/profile/'+req.params.username);
+  });
 
 module.exports = router;

@@ -30,22 +30,7 @@
             No debe verse
         </div>
         <div id="infoFollows">
-            <div class="row justify-content-between">
-                <div class="col-md-5">
-                    <div class="text-center">
-                        Followers<br>
-                        <span id="numFollowers"><%= perfil.followers.length %></span>
-                    </div>
-                    
-                </div>
-                <div class="col-md-5">
-                    <div class="text-center">
-                        Following<br>
-                        <span id="numFollowers"><%= perfil.following.length %></span>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-2 d-flex justify-content-center">
+            <div class="mb-2 d-flex justify-content-center">
                 <div id="follow">
                     <form action="/follow/<%= user.username %>/<%= perfil.username %>" method="get">
                         <button type="submit" class="btn btn-success btn-sm" onclick="toggleFollow(this)">Follow</button>
@@ -57,13 +42,132 @@
                     </form>
                 </div>
             </div>
+            <div class="row justify-content-between">
+                <div class="col-md-5">
+                    <div class="text-center">
+                        Followers<br>
+                        <span id="numFollowers"><button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#followersModal">
+                            <%= perfil.followers.length %>
+                          </button></span>
+                        <!-- Followers Modal -->
+                        <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title w-100" id="followersModalLabel">Followers</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <% perfil.followers.forEach(function(follower){ %>
+                                            <a href="/profile/<%= follower %>"><%= follower %></a><br>
+                                        <% }); %>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-5">
+                    <div class="text-center">
+                        Following<br>
+                        <span id="numFollowing"><button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#followingModal">
+                            <%= perfil.following.length %>
+                          </button></span>
+                        <!-- Following Modal -->
+                        <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="followingModalLabel">Following</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <% perfil.following.forEach(function(follower){ %>
+                                            <a href="/profile/<%= follower %>"><%= follower %></a><br>
+                                        <% }); %>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="info2">
             <span id="bios">BIOS <span class="far fa-comment-alt"></span>
             <div class="float-right d-inline-block">
-               <a href="#"><i class="far fa-edit ml-n1"></i></a>
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editBiosModalRight"><i class="far fa-edit ml-n1"></i></button>
             </div>
             <br><%= perfil.bios %></span>
+        </div>
+        <!-- Edit profile Modal -->
+        <!-- Full Height Modal Right -->
+        <div class="modal fade right" id="editBiosModalRight" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+            <div class="modal-dialog modal-full-height modal-right" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title w-100" id="editModalLabel">Editar perfil</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/mod-profile/<%= perfil.username %>" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="imagenPerfilField">Imagen de perfil:</label>
+                                <input type="file" class="form-control-file" id="imagenPerfilField" value="<%= perfil.image %>">
+                            </div>
+                            <div class="form-group">
+                              <label for="nameField"><span class="glyphicon glyphicon-user"></span> Nombre</label>
+                              <input type="text" class="form-control" id="nameField" placeholder="Nombre" value="<%= perfil.name %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastnameField"><span class="glyphicon glyphicon-user"></span> Apellidos</label>
+                                <input type="text" class="form-control" id="lastnameField" placeholder="Apellidos" value="<%= perfil.lastName %>">
+                            </div>
+                            <!--<div class="form-group col-md-4">
+                                <label for="genderField">Genero</label>
+                                <select id="genderField" class="form-control">
+                                  <option>Hombre</option>
+                                  <option>Mujer</option>
+                                  <option>Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthdayField"><span class="glyphicon glyphicon-user"></span> Fecha de nacimiento</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="date" value="<%= perfil.birthDate.toString() %>" id="example-date-input">
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label for="imagenPortadaField"> Imagen de portada:</label>
+                                <input type="file" class="form-control-file" id="imagenPortadaField" value="<%= perfil.landscape %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="biosField"><span class="glyphicon glyphicon-user">Bios</span></label>
+                                <textarea class="form-control" id="biosField" rows="3" placeholder="Escribe sobre ti..."><%= perfil.bios %></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-default btn-success btn-block bt-sm"><span class="glyphicon glyphicon-off"> Guardar</span></button>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="bodyPerfil">
             <% posts.forEach(function(post){ %>

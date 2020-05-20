@@ -30,12 +30,12 @@ $(document).ready(function(){
                     document.getElementById(urlNext).value = '/eliminar-like'
                     var num = parseInt(document.getElementById(idLikesContador).innerHTML)
                     console.log("LIKES -> " + num)
-                    document.getElementById(idLikesContador).innerHTML = num+1
+                    document.getElementById(idLikesContador).innerHTML = (num+1) + " Me gusta"
                 }else{
                     var num = parseInt(document.getElementById(idLikesContador).innerHTML)
                     document.getElementById(urlNext).value = '/subir-like'
                     console.log("LIKES -> " + num)
-                    document.getElementById(idLikesContador).innerHTML = num-1
+                    document.getElementById(idLikesContador).innerHTML = num-1 + " Me gusta"
                     document.getElementById(idPost).src = '../imgs/like.png'
                 }
             }

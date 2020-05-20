@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const multer = require('multer');
+const path = require('path');
 
 const Profile = require('../models/Profile');
 const Post = require('../models/Post');
@@ -6,10 +8,10 @@ const Comment = require('../models/Comment.js');
 
 
 router.get('/profile/:username', async function(req, res){
+    console.log("EN RENDERIZAR PERFIL" + JSON.stringify(req.params.username));
     const perfil = await Profile.find({username: req.params.username});
     var posts = await Post.find({username: req.params.username});
     for (var i=0; i < posts.length; i++){
-        posts[i].likes = [];
         posts[i].fecha = posts[i].date.toString().slice(4,24);
         //console.log(posts[i].fecha);
         posts[i].comentarios = await Comment.find({idPost: posts[i]._id});
@@ -22,14 +24,14 @@ router.get('/profile/:username', async function(req, res){
 router.get('/profile-add', async function(req, res){
     const followers = 0;
     const following = 0;
-    const perfil = new Profile({username:'pepe', name:'PEPE', lastName:'Castillo', bios: "Estudiante de 3º de Ingeniería Informática en la UGR", image:"perfil.jpg", landscape:"paisaje.jpg", followers: followers, following: following});
-    perfil.save();
-    //const post = new Post({username:"marcoscastillo", description:"Esto es un post de prueba", image:"paisaje.jpg"});
+    //const perfil = new Profile({username:'pepe', name:'PEPE', lastName:'Castillo', bios: "Estudiante de 3º de Ingeniería Informática en la UGR", image:"perfil.jpg", landscape:"paisaje.jpg", followers: followers, following: following});
+    //perfil.save();
+    //const post = new Post({username:"pepe", description:"Esto es un post de prueba", image:"paisaje.jpg"});
     //post.save();
     //var {_id} = await Post.findOne({username: "marcoscastillo"});
     //const comment = new Comment({username:"marcoscastillo", comment:"Esto es OTRO comentario de prueba", idPost:_id});
     //comment.save();
-    res.redirect('/profile/marcoscastillo');
+    res.redirect('/profile/pepe');
 });
 
 router.get('/follow/:username/:toUsername', async function(req, res){
@@ -80,11 +82,14 @@ router.get('/unfollow/:username/:toUsername', async function(req, res){
     res.redirect('/profile/'+to);
 });
 
-router.post('/mod-profile/:username', async function (req, res) {
+router.post('/mod-profile/:username', async function (req, res){
     console.log("MODIFICA PERFIL\n"+JSON.stringify(req.body))
+    console.log(req.file);
     const perfil = await Profile.findOne({username: req.params.username});
+
+    var extension = req.body.imagenPerfilField.split(".")[1];
     if((req.body.imagenPerfilField != perfil.image) && req.body.imagenPerfilField){
-        perfil.image = req.body.imagenPerfilField;
+        perfil.image = perfil.username+"_perfil"+extension;
     }
     if((!req.body.nameField != perfil.name) && req.body.nameField){
         perfil.name = req.body.nameField;
@@ -104,5 +109,72 @@ router.post('/mod-profile/:username', async function (req, res) {
     await perfil.save();
     res.redirect('/profile/'+req.params.username);
   });
+
+  router.post('/add-img-portada', async function(req, res){
+    uploadPortada(req, res, async err =>{
+        if(err){
+            console.log("ERROR PORTADA" + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPortada);
+        }else{
+            console.log("PORTADA BIEN " + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPortada);
+        }
+    });
+  });
+
+  router.post('/add-img-profile', async function(req, res){
+    uploadProfile(req, res, async err =>{
+        if(err){
+            console.log("ERROR PROFILE " + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPerfil);
+        }else{
+            console.log("PROFILE " + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPerfil);
+        }
+    });
+  });
+
+//   const storageProfile = multer.diskStorage({
+//     destination: './public/imgs',
+//     filename: async function(req, file, cb, destination){
+//         var name = req.body.usernameImg + "_profile"+ path.extname(file.originalname); 
+//         cb(null, name)
+//         const perfil = await Profile.findOne({username: req.body.usernameImg});
+//         perfil.image = "/public/imgs/"+name;
+//         await perfil.save();
+//     }
+// });
+
+const storage = multer.diskStorage({
+    destination: './public/imgs',
+    filename: async function(req, file, cb){
+        console.log(JSON.stringify(req.body));
+        if(req.body.usernameImgPerfil){
+            var name = req.body.usernameImgPerfil+ "_perfil_" + path.extname(file.originalname); 
+            cb(null, name)
+            const perfil = await Profile.findOne({username: req.body.usernameImgPerfil});
+            perfil.image = "/public/imgs/"+name;
+            await perfil.save();
+        }
+        if(req.body.usernameImgPortada){
+            var name = req.body.usernameImgPortada +"_portada_"+ path.extname(file.originalname); 
+            cb(null, name)
+            const perfil = await Profile.findOne({username: req.body.usernameImgPortada});
+            perfil.landscape = "/public/imgs/"+name;
+            await perfil.save();
+        }
+        //JOSE
+        
+    }
+});
+
+//Init
+const uploadPortada = multer({
+    storage: storage
+}).single('imagenPortadaField');
+
+const uploadProfile = multer({
+    storage: storage
+}).single('imagenProfileField');
 
 module.exports = router;

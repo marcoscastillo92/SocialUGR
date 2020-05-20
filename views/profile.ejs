@@ -19,12 +19,65 @@
         <div id="fantasma">
             No debe verse
         </div>
-        <div id="portada">
-            <img src="../imgs/<%= perfil.landscape %>" alt="imagen de portada">
+        <button type="button" class="btn btn-info float-right" style="opacity: 0.7; margin-right: 10px;" data-toggle="modal" data-target="#imagenPortadaModal"><i class="far fa-edit ml-n1"></i></button>
+        <!-- Imagen portada Modal -->
+        <div class="modal fade" id="imagenPortadaModal" tabindex="-1" role="dialog" aria-labelledby="imagenPortadaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title w-100" id="imagenPortadaModalLabel">Cambiar imagen de portada</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/add-img-portada" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="imagenPortadaField"> Imagen de portada:</label>
+                                <input type="hidden" value="<%= perfil.username %>" name="usernameImgPortada">
+                                <input type="file" class="form-control-file" id="imagenPortadaField" name="imagenPortadaField">
+                                <button type="submit" class="btn btn-primary btn-sm mx-auto">Subir</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    
+        <div id="portada">
+            <img src="<%= perfil.landscape %>" alt="imagen de portada">
+        </div>
         <div id="imagenPerfil">
-            <img src="../imgs/<%= perfil.image %>" width="200px" alt="Avatar">
+            <a data-toggle="modal" data-target="#imageProfileModal"><img src="<%= perfil.image %>" width="200px" height="200px" alt="Avatar"></a>
+            <!-- Imagen perfil Modal -->
+            <div class="modal fade" id="imageProfileModal" tabindex="-1" role="dialog" aria-labelledby="imageProfileModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title w-100" id="imageProfileModalLabel">Cambiar imagen de perfil</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/add-img-profile" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="imagenProfileField"> Imagen de perfil:</label>
+                                    <input type="hidden" value="<%= perfil.username %>" name="usernameImgPerfil">
+                                    <input type="file" class="form-control-file" id="imagenProfileField" name="imagenProfileField">
+                                    <button type="submit" class="btn btn-primary btn-sm mx-auto">Subir</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
         <div id="fantasma">
             No debe verse
@@ -42,71 +95,67 @@
                     </form>
                 </div>
             </div>
-            <div class="row justify-content-between">
-                <div class="col-md-5">
-                    <div class="text-center">
-                        Followers<br>
-                        <span id="numFollowers"><button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#followersModal">
-                            <%= perfil.followers.length %>
-                          </button></span>
-                        <!-- Followers Modal -->
-                        <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-sm" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
+            <div class="col-md-6 mx-auto">
+                <div class="text-center">
+                    Followers<br>
+                    <span id="numFollowers"><button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#followersModal">
+                        <%= perfil.followers.length %>
+                        </button></span>
+                    <!-- Followers Modal -->
+                    <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
                                     <h5 class="modal-title w-100" id="followersModalLabel">Followers</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <% perfil.followers.forEach(function(follower){ %>
-                                            <a href="/profile/<%= follower %>"><%= follower %></a><br>
-                                        <% }); %>
-                                    </div>
-                                    <div class="modal-footer">
+                                </div>
+                                <div class="modal-body">
+                                    <% perfil.followers.forEach(function(follower){ %>
+                                        <a href="/profile/<%= follower %>"><%= follower %></a><br>
+                                    <% }); %>
+                                </div>
+                                <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
-                <div class="col-md-5">
-                    <div class="text-center">
-                        Following<br>
-                        <span id="numFollowing"><button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#followingModal">
-                            <%= perfil.following.length %>
-                          </button></span>
-                        <!-- Following Modal -->
-                        <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="followingModalLabel">Following</h5>
+            </div>
+            <div class="col-md-6 mx-auto">
+                <div class="text-center">
+                    Following<br>
+                    <span id="numFollowing"><button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#followingModal">
+                        <%= perfil.following.length %>
+                        </button></span>
+                    <!-- Following Modal -->
+                    <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title w-100" id="followingModalLabel">Following</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <% perfil.following.forEach(function(follower){ %>
-                                            <a href="/profile/<%= follower %>"><%= follower %></a><br>
-                                        <% }); %>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <% perfil.following.forEach(function(following){ %>
+                                        <a href="/profile/<%= following %>"><%= following %></a><br>
+                                    <% }); %>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
         </div>
         <div id="info2">
-            <span id="bios">BIOS <span class="far fa-comment-alt"></span>
+            <span id="bios">BIOS <span class="far fa-comment-alt">
             <div class="float-right d-inline-block">
                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editBiosModalRight"><i class="far fa-edit ml-n1"></i></button>
             </div>
@@ -125,18 +174,14 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/mod-profile/<%= perfil.username %>" method="post" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="imagenPerfilField">Imagen de perfil:</label>
-                                <input type="file" class="form-control-file" id="imagenPerfilField" value="<%= perfil.image %>">
-                            </div>
+                        <form action="/mod-profile/<%= perfil.username %>" method="POST">
                             <div class="form-group">
                               <label for="nameField"><span class="glyphicon glyphicon-user"></span> Nombre</label>
-                              <input type="text" class="form-control" id="nameField" placeholder="Nombre" value="<%= perfil.name %>">
+                              <input type="text" class="form-control" id="nameField" name="nameField" placeholder="Nombre" value="<%= perfil.name %>" required>
                             </div>
                             <div class="form-group">
                                 <label for="lastnameField"><span class="glyphicon glyphicon-user"></span> Apellidos</label>
-                                <input type="text" class="form-control" id="lastnameField" placeholder="Apellidos" value="<%= perfil.lastName %>">
+                                <input type="text" class="form-control" id="lastnameField" name="lastnameField" placeholder="Apellidos" value="<%= perfil.lastName %>" required>
                             </div>
                             <!--<div class="form-group col-md-4">
                                 <label for="genderField">Genero</label>
@@ -153,12 +198,16 @@
                                 </div>
                             </div> -->
                             <div class="form-group">
-                                <label for="imagenPortadaField"> Imagen de portada:</label>
-                                <input type="file" class="form-control-file" id="imagenPortadaField" value="<%= perfil.landscape %>">
+                                <label for="biosField"><span class="glyphicon glyphicon-user">Bios</span></label>
+                                <textarea class="form-control" id="biosField" name="biosField" rows="3" placeholder="Escribe sobre ti..."><%= perfil.bios %></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="biosField"><span class="glyphicon glyphicon-user">Bios</span></label>
-                                <textarea class="form-control" id="biosField" rows="3" placeholder="Escribe sobre ti..."><%= perfil.bios %></textarea>
+                                <label for="imagenPortadaField"> Imagen de portada:</label>
+                                <input type="file" class="form-control-file" id="imagenPortadaField" name="imagenPortadaField" value="<%= perfil.landscape %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="imagenPerfilField">Imagen de perfil:</label>
+                                <input type="file" class="form-control-file" id="imagenPerfilField" name="imagenPerfilField" value="<%= perfil.image %>">
                             </div>
                             <button type="submit" class="btn btn-default btn-success btn-block bt-sm"><span class="glyphicon glyphicon-off"> Guardar</span></button>
                         </form>

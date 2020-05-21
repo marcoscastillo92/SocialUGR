@@ -14,9 +14,8 @@ const storage = multer.diskStorage({
     filename: function(req, file, cb){
         var name = "image_" + Date.now() + path.extname(file.originalname); 
         cb(null, name)
-        const fecha = new Date()
-        const post = new Post({username: username, description: req.body.description, 
-            date: Date.now(), idPost: username+Date.now(), likes: [], comments: [], image: "/public/imgs/"+name,
+        const post = new Post({username: req.user.username, description: req.body.description, 
+            date: Date.now(), idPost: req.user.username+Date.now(), likes: [], comments: [], image: "/public/imgs/"+name,
             type: "image"
         });
         post.save();
@@ -36,11 +35,11 @@ router.post('/subir-post-multimedia', async (req, res) =>{
         // console.log("Size: -> " + JSON.parse(req.body))
         upload(req, res, async err =>{
             if(err){
-                res.render('feed', {msg: err});
+                res.redirect('feed/'+ req.user.username, {msg: err});
+                console.log("ERRRRRRRO-> "+err)
             }else{
-                console.log(req.file);
-                const posts = await Post.find({username: username}).sort({date: "desc"});
-                res.redirect('feed/' + username)
+                // const posts = await Post.find({username: req.user.username}).sort({date: "desc"});
+                res.redirect('feed/' + req.user.username)
             }
         });
     // }else{
@@ -51,17 +50,17 @@ router.post('/subir-post-multimedia', async (req, res) =>{
 });
 
 router.post('/subir-post', async (req, res) =>{
-    const post = new Post({username: username, description: req.body.description, 
-        date: Date.now(), idPost: username+Date.now(), likes: [], comments: [], image: "unknown",
+    const post = new Post({username: req.body.username, description: req.body.description, 
+        date: Date.now(), idPost: req.body.username+Date.now(), likes: [], comments: [], image: "unknown",
         type: "text"
     });
     await post.save();
-    res.redirect('feed/' + username)
+    res.redirect('feed/' + req.body.username)
 });
 
 router.post('/subir-comentario', async(req, res) =>{
     console.log(req.body)
-    var comm = {username: username, comment: req.body.comment, date:Date.now(), idPost:req.body.idPost , likes: [], idComment: 'comment_'+Date.now()}
+    var comm = {username: req.body.username, comment: req.body.comment, date:Date.now(), idPost:req.body.idPost , likes: [], idComment: 'comment_'+Date.now()}
     var comentario = new Comment(comm)
     await comentario.save()
 
@@ -118,43 +117,15 @@ router.post('/eliminar-like', async(req, res) =>{
       });
 });
 
-function timeDifference(current, previous) {
-
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
-
-    var elapsed = current - previous;
-
-    if (elapsed < msPerMinute) {
-         return 'Hace '+Math.round(elapsed/1000) + ' segundos';   
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
     }
-
-    else if (elapsed < msPerHour) {
-         return 'Hace ' + Math.round(elapsed/msPerMinute) + ' minutos';   
-    }
-
-    else if (elapsed < msPerDay ) {
-         return 'Hace ' + Math.round(elapsed/msPerHour ) + ' Horas';   
-    }
-
-    else if (elapsed < msPerMonth) {
-        return 'Aproximadamente hace ' + Math.round(elapsed/msPerDay) + ' días';   
-    }
-
-    else if (elapsed < msPerYear) {
-        return 'Aproximadamente hace ' + Math.round(elapsed/msPerMonth) + ' meses';   
-    }
-
-    else {
-        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
-    }
+    return res.redirect('/');
 }
 
 
-router.get('/feed/:username', async function(req, res){
+router.get('/feed/:username',isLoggedIn, async function(req, res){
     const posts = await Post.find({username: req.params.username}).sort({date: "desc"});
     res.render('feed', {posts:posts, username: req.params.username});
 });

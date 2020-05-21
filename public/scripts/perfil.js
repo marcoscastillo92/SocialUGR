@@ -43,3 +43,4 @@ router.get('/perfil',(req,res) => {
         return res.render('perfil', {perfil : document, posts : ownedPosts})
     }
 });
+

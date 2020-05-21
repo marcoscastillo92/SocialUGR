@@ -28,10 +28,10 @@
         <div id="new_post_container">
             <div id="post_title">Nuevo Post Textual</div>
             <hr class="separador">
-            <form id="post_form" action="/subir-post" method="POST"">
+            <form id="post_form" action="/subir-post" method="POST">
                 <span><textarea name="description" id="description_t" cols="100" rows="10" placeholder="Cuéntale algo a tus amigos!"></textarea></span>
                 <br><br> 
-                <input type="hidden" name="username" value="PEPE">
+                <input type="hidden" name="username" value="<%=username%>">
                 <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
             </form>
         </div>
@@ -44,7 +44,7 @@
                 <br><br> 
                 Añade una imagen: <br>
                 <input type="file" name="post-image" class="button"><br>
-                <input type="hidden" name="username" value="PEPE">
+                <input type="hidden" name="username" value="<%=username%>">
                 <br>
                 <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
             </form>
@@ -90,7 +90,7 @@
                                     }
 
                                     else {
-                                        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
+                                        return 'Aproximadamente hace ' + Math.round(elapsed/msPerYear ) + ' años';   
                                     }
                                 }
                                 %>

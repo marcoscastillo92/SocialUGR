@@ -67,7 +67,7 @@ $(document).ready(function(){
                 success: function(response){
                     console.log("Respuesta-> "+response)
                     var num = parseInt(document.getElementById(idContador).innerHTML)
-                    document.getElementById(idContador).innerHTML = num+1
+                    document.getElementById(idContador).innerHTML = (num+1) + " Comentarios"
                     document.getElementById(idTextComment).value = ""
                     var date = new Date()
                     console.log('Tiempo.> ' + date.getTime() + " -- " + response.date)

@@ -11,8 +11,8 @@ const profileSchema = new mongoose.Schema({
     followers: Array,
     username: String,
     email: String,
-    image: { type: String, default: __dirname + "../imgs/perfil.jpg" },
-    landscape: { type: String, default: __dirname + "../imgs/paisaje.jpg" }
+    image: { type: String, default: "/imgs/perfil.jpg" },
+    landscape: { type: String, default: "/imgs/paisaje.jpg" }
 });
 
 module.exports = mongoose.model('Profile', profileSchema, 'profiles');

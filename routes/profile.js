@@ -7,8 +7,14 @@ const Post = require('../models/Post');
 const Comment = require('../models/Comment.js');
 const User = require('../models/user.js');
 
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    return res.redirect('/');
+}
 
-router.get('/profile/:username', async function(req, res){
+router.get('/profile/:username', isLoggedIn, async function(req, res){
     console.log("EN RENDERIZAR PERFIL" + JSON.stringify(req.params.username));
     const perfil = await Profile.findOne({username: req.params.username});
     const posts = await Post.find({username: req.params.username});

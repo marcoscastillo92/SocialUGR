@@ -15,10 +15,10 @@ function isLoggedIn(req, res, next) {
 }
 
 router.get('/profile/:username', isLoggedIn, async function(req, res){
-    console.log("EN RENDERIZAR PERFIL" + JSON.stringify(req.params.username));
+    //console.log("EN RENDERIZAR PERFIL" + JSON.stringify(req.params.username));
     const perfil = await Profile.findOne({username: req.params.username});
     const posts = await Post.find({username: req.params.username});
-    const user = await User.findOne({username: req.params.username})
+    const user = await User.findOne({username: req.user.username})
     res.render('profile', {perfil: perfil, posts:posts, user:user});
 });
 
@@ -84,67 +84,61 @@ router.get('/unfollow/:username/:toUsername', async function(req, res){
 });
 
 router.post('/mod-profile/:username', async function (req, res){
-    console.log("MODIFICA PERFIL\n"+JSON.stringify(req.body))
-    console.log(req.file);
-    const perfil = await Profile.findOne({username: req.params.username});
-
-    var extension = req.body.imagenPerfilField.split(".")[1];
-    if((req.body.imagenPerfilField != perfil.image) && req.body.imagenPerfilField){
-        perfil.image = perfil.username+"_perfil"+extension;
+    //console.log("MODIFICA PERFIL\n"+JSON.stringify(req.body))
+    //console.log(req.file);
+    if(req.user.username == req.params.username){
+        const perfil = await Profile.findOne({username: req.params.username});
+        
+        var extension = req.body.imagenPerfilField.split(".")[1];
+        if((req.body.imagenPerfilField != perfil.image) && req.body.imagenPerfilField){
+            perfil.image = perfil.username+"_perfil"+extension;
+        }
+        if((!req.body.nameField != perfil.name) && req.body.nameField){
+            perfil.name = req.body.nameField;
+        }
+        if((!req.body.lastnameField != perfil.lastName) && req.body.lastnameField){
+            perfil.lastName = req.body.lastnameField;
+        }
+        if((!req.body.imagenPortadaField != perfil.landscape) && req.body.imagenPortadaField){
+            perfil.landscape = req.body.imagenPortadaField;
+        }
+        if((!req.body.biosField != perfil.bios) && req.body.biosField){
+            perfil.bios = req.body.biosField;
+        }
+        await perfil.save();
+        res.redirect('/profile/'+req.params.username);
     }
-    if((!req.body.nameField != perfil.name) && req.body.nameField){
-        perfil.name = req.body.nameField;
-    }
-    if((!req.body.lastnameField != perfil.lastName) && req.body.lastnameField){
-        perfil.lastName = req.body.lastnameField;
-    }
-    // if((!req.body.genderField != perfil.gender) && req.body.genderField){
-    //     perfil.gender = req.body.genderField;
-    // }
-    if((!req.body.imagenPortadaField != perfil.landscape) && req.body.imagenPortadaField){
-        perfil.landscape = req.body.imagenPortadaField;
-    }
-    if((!req.body.biosField != perfil.bios) && req.body.biosField){
-        perfil.bios = req.body.biosField;
-    }
-    await perfil.save();
-    res.redirect('/profile/'+req.params.username);
   });
 
   router.post('/add-img-portada', async function(req, res){
-    uploadPortada(req, res, async err =>{
-        if(err){
-            console.log("ERROR PORTADA" + JSON.stringify(req.body));
-            res.redirect('profile/' + req.body.usernameImgPortada);
-        }else{
-            console.log("PORTADA BIEN " + JSON.stringify(req.body));
-            res.redirect('profile/' + req.body.usernameImgPortada);
-        }
-    });
+    if(req.user.username == req.body.usernameImgPortada || req.user.username == req.body.usernameImgPerfil){
+        uploadPortada(req, res, async err =>{
+            if(err){
+                console.log("ERROR PORTADA" + JSON.stringify(req.body));
+                res.redirect('profile/' + req.body.usernameImgPortada);
+            }else{
+                console.log("PORTADA BIEN " + JSON.stringify(req.body));
+                res.redirect('profile/' + req.body.usernameImgPortada);
+            }
+        });
+    }
   });
 
   router.post('/add-img-profile', async function(req, res){
-    uploadProfile(req, res, async err =>{
-        if(err){
-            console.log("ERROR PROFILE " + JSON.stringify(req.body));
-            res.redirect('profile/' + req.body.usernameImgPerfil);
-        }else{
-            console.log("PROFILE " + JSON.stringify(req.body));
-            res.redirect('profile/' + req.body.usernameImgPerfil);
-        }
-    });
+    console.log("ENTRAAAAAAAAAAAA IMG");
+    console.log(JSON.stringify(req.user))
+    if(req.user.username == req.body.usernameImgPortada || req.user.username == req.body.usernameImgPerfil){
+        uploadProfile(req, res, async err =>{
+            if(err){
+                console.log("ERROR PROFILE " + JSON.stringify(req.body));
+                res.redirect('profile/' + req.body.usernameImgPerfil);
+            }else{
+                console.log("PROFILE " + JSON.stringify(req.body));
+                res.redirect('profile/' + req.body.usernameImgPerfil);
+            }
+        });
+    }
   });
-
-//   const storageProfile = multer.diskStorage({
-//     destination: './public/imgs',
-//     filename: async function(req, file, cb, destination){
-//         var name = req.body.usernameImg + "_profile"+ path.extname(file.originalname); 
-//         cb(null, name)
-//         const perfil = await Profile.findOne({username: req.body.usernameImg});
-//         perfil.image = "/public/imgs/"+name;
-//         await perfil.save();
-//     }
-// });
 
 const storage = multer.diskStorage({
     destination: './public/imgs',

@@ -102,8 +102,8 @@ function toggleSearch(e){
 function sendSearch(e){
     if(e.keyCode == 13){
         var value = document.getElementById("cuadroBusqueda").value;
-        console.log(value);
-        //Consulta MONGODB para busqueda de usuarios
+        console.log("Busqueda usuario: "+value);
+        window.location.href="/profile/"+value;
     }
 }
 

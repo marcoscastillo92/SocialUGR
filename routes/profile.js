@@ -17,9 +17,13 @@ function isLoggedIn(req, res, next) {
 router.get('/profile/:username', isLoggedIn, async function(req, res){
     //console.log("EN RENDERIZAR PERFIL" + JSON.stringify(req.params.username));
     const perfil = await Profile.findOne({username: req.params.username});
-    const posts = await Post.find({username: req.params.username});
     const user = await User.findOne({username: req.user.username})
-    res.render('profile', {perfil: perfil, posts:posts, user:user});
+    if(perfil){
+        const posts = await Post.find({username: req.params.username});
+        res.render('profile', {perfil: perfil, posts:posts, user:user});
+    }else{
+        res.render('notfound', {user:user});
+    }
 });
 
 router.get('/profile-add', async function(req, res){

@@ -58,7 +58,7 @@
         <div class="bloque">
             <div id="header">
                 <div id="profile_image">
-                    <a href="/profile/<%=pos.username%>"><img src="<%=pos.profileImage%>" alt="profile_image" width="75" height="75"></a>
+                    <a href="/profile/<%=pos.username%>"><img src="<%=post.profileImage%>" alt="profile_image" width="75" height="75"></a>
                 </div>
                 <div id="feed_info">
                     <p id="feed_username"><strong><%= pos.username %></strong> </p>
@@ -130,13 +130,15 @@
                 <input type="hidden" name="idPost" id="idPost" value="<%= pos.idPost%>">
                 <input type="hidden" name="username" id="username" value="<%= profile.username%>">
                 <% var src = "../imgs/like.png"; %>
+                <% var existe = 0; %>
                 <% pos.likes.forEach(function(like){ %>
-                <% if (like.username == profile.username){ %>
+                <% if (like.username == profile.username && existe == 0){ %>
                 <% src = "../imgs/heart.png";%>
-                <%}else{%>
+                <% existe = 1; %>
+                <%}else if (existe == 0){%>
                 <% src = "../imgs/like.png";%>
                 <%}%>
-                                <%  });%>
+                <%  });%>
                 <form action="/subir-like" method="post" class="like_form"">
                     <input type="hidden" name="idPost" id="idPost" value="<%= pos.idPost%>">
                     <input type="hidden" name="username" id="username" value="<%= profile.username%>">

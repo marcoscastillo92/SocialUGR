@@ -130,35 +130,27 @@ router.post('/mod-profile/:username', async function (req, res){
   });
 
   router.post('/add-img-portada', async function(req, res){
-    if(req.user.username == req.body.usernameImgPortada || req.user.username == req.body.usernameImgPerfil){
-        uploadPortada(req, res, async err =>{
-            if(err){
-                console.log("ERROR PORTADA" + JSON.stringify(req.body));
-                res.redirect('profile/' + req.body.usernameImgPortada);
-            }else{
-                console.log("PORTADA BIEN " + JSON.stringify(req.body));
-                res.redirect('profile/' + req.body.usernameImgPortada);
-            }
-        });
-    }
+    uploadPortada(req, res, async err =>{
+        if(err){
+            console.log("ERROR PORTADA" + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPortada);
+        }else{
+            console.log("PORTADA BIEN " + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPortada);
+        }
+    });
   });
 
   router.post('/add-img-profile', async function(req, res){
-    console.log(JSON.stringify(req.user))
-    if(req.user.username == req.body.usernameImgPortada || req.user.username == req.body.usernameImgPerfil){
-        uploadProfile(req, res, async err =>{
-            if(err){
-                console.log("ERROR PROFILE " + JSON.stringify(req.body));
-                res.redirect('profile/' + req.body.usernameImgPerfil);
-            }else{
-                console.log("PROFILE " + JSON.stringify(req.body));
-                res.redirect('profile/' + req.body.usernameImgPerfil);
-            }
-        });
-    }
-      console.log(req.user.username);
-      console.log(req.body.usernameImgPortada);
-      console.log(req.user.usernameImgPerfil);
+    uploadProfile(req, res, async err =>{
+        if(err){
+            console.log("ERROR PROFILE " + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPerfil);
+        }else{
+            console.log("PROFILE " + JSON.stringify(req.body));
+            res.redirect('profile/' + req.body.usernameImgPerfil);
+        }
+    });
   });
 
 const storage = multer.diskStorage({

@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <% perfil.followers.forEach(function(follower){ %>
-                                        <img src="<%= follower.image %>" style="border-radius: 10px;"/>
+                                        <a href="/profile/<%= follower.username %>"><img src="<%= follower.image %>" style="border-radius: 50%; width: 50px; height: 50px;"/></a><br>
                                         <a href="/profile/<%= follower.username %>"><%= follower.username %></a><br>
                                     <% }); %>
                                 </div>
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <% perfil.following.forEach(function(following){ %>
-                                        <img src="<%= following.image %>" style="border-radius: 10px;" />
+                                        <a href="/profile/<%= following.username %>"><img src="<%= following.image %>" style="border-radius: 50%; width: 50px; height: 50px;" /></a><br>
                                         <a href="/profile/<%= following.username %>"><%= following.username %></a><br>
                                     <% }); %>
                                 </div>
@@ -236,7 +236,7 @@
         <% } %>
         <div id="bodyPerfil">
             <% posts.forEach(function(post){ %>
-                <%- include('partials/post', {post:post, user:user}); %>
+                <%- include('partials/post', {post:post, user:user, perfil: perfil}); %>
             <% }); %>
         </div>
     </div>

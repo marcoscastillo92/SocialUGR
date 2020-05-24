@@ -63,7 +63,7 @@ router.post('/subir-post', async (req, res) => {
 
 router.post('/subir-comentario', async (req, res) => {
     console.log(req.body)
-    var comm = { username: req.body.username, comment: req.body.comment, date: Date.now(), idPost: req.body.idPost, likes: [], idComment: 'comment_' + Date.now() }
+    var comm = { username: req.user.username, comment: req.body.comment, date: Date.now(), idPost: req.body.idPost, likes: [], idComment: 'comment_' + Date.now() }
     var comentario = new Comment(comm)
     await comentario.save()
 
@@ -84,7 +84,7 @@ router.post('/subir-comentario', async (req, res) => {
 });
 
 router.post('/subir-like', async (req, res) => {
-    const like = new Like({ username: req.body.username, date: Date.now(), idPost: req.body.idPost, idLike: "like_" + Date.now() })
+    const like = new Like({ username: req.user.username, date: Date.now(), idPost: req.body.idPost, idLike: "like_" + Date.now() })
     await like.save()
 
     const likes = await Like.find({ idPost: req.body.idPost }).sort({ date: 'desc' })
@@ -100,7 +100,6 @@ router.post('/subir-like', async (req, res) => {
                     res.send({ action: "insert" });
                 });
         });
-
 });
 
 router.post('/eliminar-like', async (req, res) => {
@@ -136,6 +135,7 @@ router.get('/feed/:username', isLoggedIn, async function (req, res) {
     for (fol in following) {
         posts[fol] = (await Post.find({ username: following[fol].username }));
         posts[fol].profileImage = following[fol].image;
+        console.log(posts[fol]);
         //posts[fol].sort({ date: "desc" });
     }
     

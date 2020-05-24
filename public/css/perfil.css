@@ -1,5 +1,6 @@
 header {
     width: 100%;
+    z-index: 2;
     height: 70px;
     background-color: rgba(255,255,255,0.6);
     border-bottom: 1px solid #53abff;

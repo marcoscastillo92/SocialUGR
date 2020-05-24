@@ -119,7 +119,7 @@ router.post('/mod-profile/:username', async function (req, res){
       if(req.user.username == req.params.username){
         const post = await Post.findOne({_id:req.params.idPost});
         if(post.type == "image"){
-            fs.unlink(post.image);
+            fs.unlink('.'+post.image);
         }
         for (coment in post.comments) {
             var comentario = await Comment.findOneAndRemove(coment._id);

@@ -234,7 +234,7 @@
         <% } %>
         <div id="bodyPerfil">
             <% posts.forEach(function(post){ %>
-                <%- include('partials/post', {post:post}); %>
+                <%- include('partials/post', {post:post, user:user}); %>
             <% }); %>
         </div>
     </div>

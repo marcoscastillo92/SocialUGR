@@ -10,6 +10,10 @@
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="../public/css/perfil.css">
     <link rel="stylesheet" href="../public/css/feed.css">
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../public/scripts/script.js"></script>
+
     <link rel="shortcut icon" href="#">
     <title>SocialUGR - <%= perfil.name %> <%= perfil.lastName %></title>
 </head>
@@ -19,54 +23,24 @@
         <div id="fantasma">
             No debe verse
         </div>
-        <button type="button" class="btn btn-info float-right" style="opacity: 0.7; margin-right: 10px;" data-toggle="modal" data-target="#imagenPortadaModal"><i class="far fa-edit ml-n1"></i></button>
-        <!-- Imagen portada Modal -->
-        <div class="modal fade" id="imagenPortadaModal" tabindex="-1" role="dialog" aria-labelledby="imagenPortadaModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title w-100" id="imagenPortadaModalLabel">Cambiar imagen de portada</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/add-img-portada" method="POST" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="imagenPortadaField"> Imagen de portada:</label>
-                                <input type="hidden" value="<%= perfil.username %>" name="usernameImgPortada">
-                                <input type="file" class="form-control-file" id="imagenPortadaField" name="imagenPortadaField">
-                                <button type="submit" class="btn btn-primary btn-sm mx-auto">Subir</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="portada">
-            <img src="<%= perfil.landscape %>" alt="imagen de portada">
-        </div>
-        <div id="imagenPerfil">
-            <a data-toggle="modal" data-target="#imageProfileModal"><img src="<%= perfil.image %>" width="200px" height="200px" alt="Avatar"></a>
-            <!-- Imagen perfil Modal -->
-            <div class="modal fade" id="imageProfileModal" tabindex="-1" role="dialog" aria-labelledby="imageProfileModalLabel" aria-hidden="true">
+        <% if (user.username == perfil.username){ %>
+            <button type="button" class="btn btn-info float-right" style="opacity: 0.7; margin-right: 10px;" data-toggle="modal" data-target="#imagenPortadaModal"><i class="far fa-edit ml-n1"></i></button>
+            <!-- Imagen portada Modal -->
+            <div class="modal fade" id="imagenPortadaModal" tabindex="-1" role="dialog" aria-labelledby="imagenPortadaModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title w-100" id="imageProfileModalLabel">Cambiar imagen de perfil</h5>
+                            <h5 class="modal-title w-100" id="imagenPortadaModalLabel">Cambiar imagen de portada</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/add-img-profile" method="POST" enctype="multipart/form-data">
+                            <form action="/add-img-portada" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="imagenProfileField"> Imagen de perfil:</label>
-                                    <input type="hidden" value="<%= perfil.username %>" name="usernameImgPerfil">
-                                    <input type="file" class="form-control-file" id="imagenProfileField" name="imagenProfileField">
+                                    <label for="imagenPortadaField"> Imagen de portada:</label>
+                                    <input type="hidden" value="<%= perfil.username %>" name="usernameImgPortada">
+                                    <input type="file" class="form-control-file" id="imagenPortadaField" name="imagenPortadaField">
                                     <button type="submit" class="btn btn-primary btn-sm mx-auto">Subir</button>
                                 </div>
                             </form>
@@ -77,6 +51,42 @@
                     </div>
                 </div>
             </div>
+        <% } %>
+        <div id="portada">
+            <img src="<%= perfil.landscape %>" alt="imagen de portada">
+        </div>
+        <div id="imagenPerfil">
+            <% if (user.username == perfil.username){ %>
+                <a data-toggle="modal" data-target="#imageProfileModal"><img src="<%= perfil.image %>" width="200px" height="200px" alt="Avatar"></a>
+                <!-- Imagen perfil Modal -->
+                <div class="modal fade" id="imageProfileModal" tabindex="-1" role="dialog" aria-labelledby="imageProfileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title w-100" id="imageProfileModalLabel">Cambiar imagen de perfil</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/add-img-profile" method="POST" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="imagenProfileField"> Imagen de perfil:</label>
+                                        <input type="hidden" value="<%= perfil.username %>" name="usernameImgPerfil">
+                                        <input type="file" class="form-control-file" id="imagenProfileField" name="imagenProfileField">
+                                        <button type="submit" class="btn btn-primary btn-sm mx-auto">Subir</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }else{ %>
+                <img src="<%= perfil.image %>" width="200px" height="200px" alt="Avatar">
+            <% } %>
             
         </div>
         <div id="fantasma">
@@ -156,79 +166,80 @@
         </div>
         <div id="info2">
             <span id="bios">BIOS <span class="far fa-comment-alt">
-            <div class="float-right d-inline-block">
-                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editBiosModalRight"><i class="far fa-edit ml-n1"></i></button>
-            </div>
+            <% if (user.username == perfil.username){ %>
+                <div class="float-right d-inline-block">
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editBiosModalRight"><i class="far fa-edit ml-n1"></i></button>
+                </div>
+            <% } %>
             <br><%= perfil.bios %></span>
         </div>
-        <!-- Edit profile Modal -->
-        <!-- Full Height Modal Right -->
-        <div class="modal fade right" id="editBiosModalRight" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-            <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
-            <div class="modal-dialog modal-full-height modal-right" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title w-100" id="editModalLabel">Editar perfil</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/mod-profile/<%= perfil.username %>" method="POST">
-                            <div class="form-group">
-                              <label for="nameField"><span class="glyphicon glyphicon-user"></span> Nombre</label>
-                              <input type="text" class="form-control" id="nameField" name="nameField" placeholder="Nombre" value="<%= perfil.name %>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastnameField"><span class="glyphicon glyphicon-user"></span> Apellidos</label>
-                                <input type="text" class="form-control" id="lastnameField" name="lastnameField" placeholder="Apellidos" value="<%= perfil.lastName %>" required>
-                            </div>
-                            <!--<div class="form-group col-md-4">
-                                <label for="genderField">Genero</label>
-                                <select id="genderField" class="form-control">
-                                  <option>Hombre</option>
-                                  <option>Mujer</option>
-                                  <option>Otro</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="birthdayField"><span class="glyphicon glyphicon-user"></span> Fecha de nacimiento</label>
-                                <div class="col-10">
-                                    <input class="form-control" type="date" value="<%= perfil.birthDate.toString() %>" id="example-date-input">
+        <% if (user.username == perfil.username){ %>
+            <!-- Edit profile Modal -->
+            <!-- Full Height Modal Right -->
+            <div class="modal fade right" id="editBiosModalRight" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+                <div class="modal-dialog modal-full-height modal-right" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title w-100" id="editModalLabel">Editar perfil</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/mod-profile/<%= perfil.username %>" method="POST">
+                                <div class="form-group">
+                                <label for="nameField"><span class="glyphicon glyphicon-user"></span> Nombre</label>
+                                <input type="text" class="form-control" id="nameField" name="nameField" placeholder="Nombre" value="<%= perfil.name %>" required>
                                 </div>
-                            </div> -->
-                            <div class="form-group">
-                                <label for="biosField"><span class="glyphicon glyphicon-user">Bios</span></label>
-                                <textarea class="form-control" id="biosField" name="biosField" rows="3" placeholder="Escribe sobre ti..."><%= perfil.bios %></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="imagenPortadaField"> Imagen de portada:</label>
-                                <input type="file" class="form-control-file" id="imagenPortadaField" name="imagenPortadaField" value="<%= perfil.landscape %>">
-                            </div>
-                            <div class="form-group">
-                                <label for="imagenPerfilField">Imagen de perfil:</label>
-                                <input type="file" class="form-control-file" id="imagenPerfilField" name="imagenPerfilField" value="<%= perfil.image %>">
-                            </div>
-                            <button type="submit" class="btn btn-default btn-success btn-block bt-sm"><span class="glyphicon glyphicon-off"> Guardar</span></button>
-                        </form>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <div class="form-group">
+                                    <label for="lastnameField"><span class="glyphicon glyphicon-user"></span> Apellidos</label>
+                                    <input type="text" class="form-control" id="lastnameField" name="lastnameField" placeholder="Apellidos" value="<%= perfil.lastName %>" required>
+                                </div>
+                                <!--<div class="form-group col-md-4">
+                                    <label for="genderField">Genero</label>
+                                    <select id="genderField" class="form-control">
+                                    <option>Hombre</option>
+                                    <option>Mujer</option>
+                                    <option>Otro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthdayField"><span class="glyphicon glyphicon-user"></span> Fecha de nacimiento</label>
+                                    <div class="col-10">
+                                        <input class="form-control" type="date" value="<%= perfil.birthDate.toString() %>" id="example-date-input">
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <label for="biosField"><span class="glyphicon glyphicon-user">Bios</span></label>
+                                    <textarea class="form-control" id="biosField" name="biosField" rows="3" placeholder="Escribe sobre ti..."><%= perfil.bios %></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imagenPortadaField"> Imagen de portada:</label>
+                                    <input type="file" class="form-control-file" id="imagenPortadaField" name="imagenPortadaField" value="<%= perfil.landscape %>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="imagenPerfilField">Imagen de perfil:</label>
+                                    <input type="file" class="form-control-file" id="imagenPerfilField" name="imagenPerfilField" value="<%= perfil.image %>">
+                                </div>
+                                <button type="submit" class="btn btn-default btn-success btn-block bt-sm"><span class="glyphicon glyphicon-off"> Guardar</span></button>
+                            </form>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <% } %>
         <div id="bodyPerfil">
             <% posts.forEach(function(post){ %>
                 <%- include('partials/post', {post:post}); %>
             <% }); %>
         </div>
     </div>
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../public/scripts/script.js"></script>
     <!-- Scripts BOOTSTRAP 4-->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>

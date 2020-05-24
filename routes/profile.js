@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const Profile = require('../models/Profile');
 const Post = require('../models/Post');
@@ -112,6 +113,20 @@ router.post('/mod-profile/:username', async function (req, res){
         await perfil.save();
         res.redirect('/profile/'+req.params.username);
     }
+  });
+
+  router.get('/delete-post/:username/:idPost', async function(req, res){
+      if(req.user.username == req.params.username){
+        const post = await Post.findOne({_id:req.params.idPost});
+        if(post.type == "image"){
+            fs.unlink('.'+post.image);
+        }
+        for (coment in post.comments) {
+            var comentario = await Comment.findOneAndRemove(coment._id);
+        }
+        post.remove();
+      }
+      res.redirect('/profile/'+req.user.username);
   });
 
   router.post('/add-img-portada', async function(req, res){

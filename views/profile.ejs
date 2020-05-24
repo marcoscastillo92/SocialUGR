@@ -165,7 +165,7 @@
             </div>
         </div>
         <div id="info2">
-            <span id="bios">BIOS <span class="far fa-comment-alt">
+            <span id="bios">BIOS <span class="far fa-comment-alt"></span>
             <% if (user.username == perfil.username){ %>
                 <div class="float-right d-inline-block">
                     <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editBiosModalRight"><i class="far fa-edit ml-n1"></i></button>
@@ -234,7 +234,7 @@
         <% } %>
         <div id="bodyPerfil">
             <% posts.forEach(function(post){ %>
-                <%- include('partials/post', {post:post}); %>
+                <%- include('partials/post', {post:post, user:user}); %>
             <% }); %>
         </div>
     </div>

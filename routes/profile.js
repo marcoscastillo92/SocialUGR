@@ -94,18 +94,11 @@ router.post('/mod-profile/:username', async function (req, res){
     if(req.user.username == req.params.username){
         const perfil = await Profile.findOne({username: req.params.username});
         
-        var extension = req.body.imagenPerfilField.split(".")[1];
-        if((req.body.imagenPerfilField != perfil.image) && req.body.imagenPerfilField){
-            perfil.image = perfil.username+"_perfil"+extension;
-        }
         if((!req.body.nameField != perfil.name) && req.body.nameField){
             perfil.name = req.body.nameField;
         }
         if((!req.body.lastnameField != perfil.lastName) && req.body.lastnameField){
             perfil.lastName = req.body.lastnameField;
-        }
-        if((!req.body.imagenPortadaField != perfil.landscape) && req.body.imagenPortadaField){
-            perfil.landscape = req.body.imagenPortadaField;
         }
         if((!req.body.biosField != perfil.bios) && req.body.biosField){
             perfil.bios = req.body.biosField;

@@ -6,6 +6,7 @@ const Profile = require('../models/Profile');
 const Post = require('../models/Post');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment.js');
+const User = require ('../models/user')
 
 const username = "pepita"
 
@@ -126,8 +127,16 @@ function isLoggedIn(req, res, next) {
 
 
 router.get('/feed/:username',isLoggedIn, async function(req, res){
-    const posts = await Post.find({username: req.params.username}).sort({date: "desc"});
-    res.render('feed', {posts:posts, username: req.params.username});
+    // const posts = await Post.find({username: req.params.username}).sort({date: "desc"});
+    const profile = await Profile.findOne({username: req.user.username})
+    var posts = []
+    const following = profile.following;
+    following.forEach(async username => {
+        const postFromUsername = await Post.find({username: username})
+        posts.push(postFromUsername);
+    })
+    // posts.sort({date: "desc"})
+    res.render('feed', {posts:posts, profile: profile});
 });
 
 router.get('/profile-add', async function(req, res){

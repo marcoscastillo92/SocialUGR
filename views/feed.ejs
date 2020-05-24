@@ -31,7 +31,7 @@
             <form id="post_form" action="/subir-post" method="POST">
                 <span><textarea name="description" id="description_t" cols="100" rows="10" placeholder="Cuéntale algo a tus amigos!"></textarea></span>
                 <br><br> 
-                <input type="hidden" name="username" value="<%=username%>">
+                <input type="hidden" name="username" value="<%=profile.username%>">
                 <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
             </form>
         </div>
@@ -44,7 +44,7 @@
                 <br><br> 
                 Añade una imagen: <br>
                 <input type="file" name="post-image" class="button"><br>
-                <input type="hidden" name="username" value="<%=username%>">
+                <input type="hidden" name="username" value="<%=profile.username%>">
                 <br>
                 <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
             </form>
@@ -53,7 +53,7 @@
                 <div class="bloque">
                     <div id="header">
                         <div id="profile_image">
-                            <img src="../imgs/perfil.jpg" alt="profile_image" width="75" height="75">
+                            <a href="/profile/<%=profile.username%>"><img src="<%=profile.image%>" alt="profile_image" width="75" height="75"></a>
                         </div>
                         <div id="feed_info">
                             <p id="feed_username"><strong><%= post.username %></strong>  </p>
@@ -121,10 +121,10 @@
                             </div>
                             <div class="interaction_section">
                                 <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
-                                <input type="hidden" name="username" id="username" value="<%= username%>">
+                                <input type="hidden" name="username" id="username" value="<%= profile.username%>">
                                 <% var src = "../imgs/like.png"; %>
                                 <% post.likes.forEach(function(like){ %>
-                                    <% if (like.username == username){ %>
+                                    <% if (like.username == profile.username){ %>
                                         <% src = "../imgs/heart.png";%>
                                     <%}else{%>
                                         <% src = "../imgs/like.png";%>
@@ -132,7 +132,7 @@
                                 <%  });%>
                                 <form action="/subir-like" method="post" class="like_form"">
                                     <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
-                                    <input type="hidden" name="username" id="username" value="<%= username%>">
+                                    <input type="hidden" name="username" id="username" value="<%= profile.username%>">
                                     <input type="hidden" name="idForm" id="idForm" value="form_<%= post.idPost%>">
                                     <% if (src == "../imgs/heart.png"){ %>
                                         <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/eliminar-like">
@@ -167,7 +167,7 @@
                         <form action="/subir-comentario" method="POST" class="new_comment_form">
                             <input type="text" name="comment" id="text_comment_<%= post.idPost %>" class="text_area_comment"placeholder="Escribe un comentario..." required>
                             <input type="hidden" name="idPost" value="<%= post.idPost %>">
-                            <input type="hidden" name="username" value="<%= username %>">
+                            <input type="hidden" name="username" value="<%= profile.username %>">
                             <input type="hidden" name="idLastComment" value="comments_section_<%- idLastComment %>">
                             <input type="image" src="../imgs/send.png" alt="Submit Form" id="button_send_comment" value="Send" width="45" height="45">
                         </form>

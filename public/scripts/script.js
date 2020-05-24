@@ -128,6 +128,41 @@ function initialize(){
     }
 }
 
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+        return 'Hace ' + Math.round(elapsed / 1000) + ' segundos';
+    }
+
+    else if (elapsed < msPerHour) {
+        return 'Hace ' + Math.round(elapsed / msPerMinute) + ' minutos';
+    }
+
+    else if (elapsed < msPerDay) {
+        return 'Hace ' + Math.round(elapsed / msPerHour) + ' Horas';
+    }
+
+    else if (elapsed < msPerMonth) {
+        return 'Aproximadamente hace ' + Math.round(elapsed / msPerDay) + ' días';
+    }
+
+    else if (elapsed < msPerYear) {
+        return 'Aproximadamente hace ' + Math.round(elapsed / msPerMonth) + ' meses';
+    }
+
+    else {
+        return 'approximately ' + Math.round(elapsed / msPerYear) + ' years ago';
+    }
+}
+
 window.onload = initialize
 
 /* Bloques JS */

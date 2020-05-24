@@ -43,17 +43,20 @@ router.get('/profile-add', async function(req, res){
 router.get('/follow/:username/:toUsername', async function(req, res){
     var to = req.params.toUsername;
     var from = req.params.username;
+    var inArray1 = false;
     if(to != from){
         const perfilPropio = await Profile.findOne({username: req.params.username});
-        const p = await Profile.findOne({username: to});
-        if (perfilPropio.following.indexOf(p) == -1) {
-            perfilPropio.following.push(p);
-            await perfilPropio.save();
+        for (following in perfilPropio.following){
+            if(perfilPropio.following[following].username == to){
+                inArray1 = true;
+                break;
+            }
         }
-        const perfilToFollow = await Profile.findOne({ username: req.params.toUsername });
-        const p2 = await Profile.findOne({username: from});
-        if (perfilToFollow.followers.indexOf(p2) == -1) {
-            perfilToFollow.followers.push(p2);
+        if (!inArray1) {
+            perfilPropio.following.push(await Profile.findOne({username: to}));
+            await perfilPropio.save();
+            const perfilToFollow = await Profile.findOne({ username: req.params.toUsername });
+            perfilToFollow.followers.push(await Profile.findOne({username: from}));
             await perfilToFollow.save();
         }
     }
@@ -65,24 +68,21 @@ router.get('/unfollow/:username/:toUsername', async function(req, res){
     var to = req.params.toUsername;
     var from = req.params.username;
     if(to != from){
-        const perfilPropio = await Profile.findOne({username: req.params.username}, async function(err, doc,){
-            const p = await Profile.findOne({username: to});
-            var index = doc.following.indexOf(p);
-            if(index != -1){
-                doc.following.splice(index, 1);
-                //console.log("PROPIO: "+JSON.stringify(doc.following));
-                doc.save();
+        const perfilPropio = await Profile.findOne({username: req.params.username});
+        for (following in perfilPropio.following){
+            if(perfilPropio.following[following].username == to){
+                perfilPropio.following.splice(following, 1);
+                perfilPropio.save();
             }
-        });
-        const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, async function(err, doc){
-            const p = await Profile.findOne({username: from});
-            var index = doc.following.indexOf(p);
-            if(index != -1){
-                doc.followers.splice(index,1);
-                //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
-                doc.save();
+        }
+        
+        const perfilToUnfollow = await Profile.findOne({username: req.params.toUsername});
+        for (follower in perfilToUnfollow.followers){
+            if(perfilToUnfollow.followers[follower].username == from){
+                perfilToUnfollow.followers.splice(follower, 1);
+                perfilToUnfollow.save();
             }
-        });
+        }
     }
 
     res.redirect('/profile/'+to);

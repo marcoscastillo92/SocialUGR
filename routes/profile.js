@@ -44,20 +44,18 @@ router.get('/follow/:username/:toUsername', async function(req, res){
     var to = req.params.toUsername;
     var from = req.params.username;
     if(to != from){
-        const perfilPropio = await Profile.findOne({username: req.params.username}, function(err, doc){
-            if(doc.following.indexOf(to) == -1){
-                doc.following.push(to)
-                doc.save();
-            }
-            //console.log("PROPIO: "+JSON.stringify(doc.following));
-        });
-        const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
-            if(doc.followers.indexOf(from) == -1){
-                doc.followers.push(from);
-                doc.save();
-            }
-            //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
-        });
+        const perfilPropio = await Profile.findOne({username: req.params.username});
+        const p = await Profile.findOne({username: to});
+        if (perfilPropio.following.indexOf(p) == -1) {
+            perfilPropio.following.push(p);
+            await perfilPropio.save();
+        }
+        const perfilToFollow = await Profile.findOne({ username: req.params.toUsername });
+        const p2 = await Profile.findOne({username: from});
+        if (perfilToFollow.followers.indexOf(p2) == -1) {
+            perfilToFollow.followers.push(p2);
+            await perfilToFollow.save();
+        }
     }
     
     res.redirect('/profile/'+to);
@@ -67,16 +65,18 @@ router.get('/unfollow/:username/:toUsername', async function(req, res){
     var to = req.params.toUsername;
     var from = req.params.username;
     if(to != from){
-        const perfilPropio = await Profile.findOne({username: req.params.username}, function(err, doc,){
-            var index = doc.following.indexOf(to);
+        const perfilPropio = await Profile.findOne({username: req.params.username}, async function(err, doc,){
+            const p = await Profile.findOne({username: to});
+            var index = doc.following.indexOf(p);
             if(index != -1){
                 doc.following.splice(index, 1);
                 //console.log("PROPIO: "+JSON.stringify(doc.following));
                 doc.save();
             }
         });
-        const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, function(err, doc){
-            var index = doc.followers.indexOf(from)
+        const perfilToFollow = await Profile.findOne({username: req.params.toUsername}, async function(err, doc){
+            const p = await Profile.findOne({username: from});
+            var index = doc.following.indexOf(p);
             if(index != -1){
                 doc.followers.splice(index,1);
                 //console.log("TO FOLLOW: "+JSON.stringify(doc.followers));
@@ -144,7 +144,6 @@ router.post('/mod-profile/:username', async function (req, res){
   });
 
   router.post('/add-img-profile', async function(req, res){
-    console.log("ENTRAAAAAAAAAAAA IMG");
     console.log(JSON.stringify(req.user))
     if(req.user.username == req.body.usernameImgPortada || req.user.username == req.body.usernameImgPerfil){
         uploadProfile(req, res, async err =>{
@@ -157,6 +156,9 @@ router.post('/mod-profile/:username', async function (req, res){
             }
         });
     }
+      console.log(req.user.username);
+      console.log(req.body.usernameImgPortada);
+      console.log(req.user.usernameImgPerfil);
   });
 
 const storage = multer.diskStorage({
@@ -177,7 +179,6 @@ const storage = multer.diskStorage({
             perfil.landscape = "/public/imgs/"+name;
             await perfil.save();
         }
-        //JOSE
         
     }
 });

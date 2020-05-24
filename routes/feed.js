@@ -129,29 +129,16 @@ function isLoggedIn(req, res, next) {
 
 
 router.get('/feed/:username', isLoggedIn, async function (req, res) {
-    // const posts = await Post.find({username: req.params.username}).sort({date: "desc"});
     const profile = await Profile.findOne({ username: req.user.username })
     var posts = new Array();
-    var following = profile.following;/*
-    following.forEach(async function(username) {
-        const postFromUsername = await Post.find({ username: username })
-        posts.push(postFromUsername);
-        console.log("Esto son los posts dentro de la funcion" + posts);
-    })*/
-    for (follow in following) {
-        var postFromUsername = [];
-        postFromUsername[0] = await Post.find({ username: following[follow] });
-        console.log("Posts username: "+postFromUsername);
-        for (post in postFromUsername){
-            posts.push(post);
-        }
-    }/*
-    for(var i=0; i<following.lenght; i++){
-        posts[i] = following[i];
-    }*/
-
-    console.log("Esto son los posts" + posts);
-    // posts.sort({date: "desc"})
+    var following = profile.following;
+   
+    for (fol in following) {
+        posts[fol] = (await Post.find({ username: following[fol].username }));
+        posts[fol].profileImage = following[fol].image;
+        //posts[fol].sort({ date: "desc" });
+    }
+    
     res.render('feed', { posts: posts, profile: profile });
 });
 

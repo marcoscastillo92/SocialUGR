@@ -54,14 +54,14 @@
             </form>
         </div>
         <% posts.forEach(function(post){ %>
+        <% post.forEach(function(pos){ %>
         <div class="bloque">
             <div id="header">
                 <div id="profile_image">
-                    <a href="/profile/<%=profile.username%>"><img src="<%=profile.image%>" alt="profile_image"
-                            width="75" height="75"></a>
+                    <a href="/profile/<%=pos.username%>"><img src="<%=pos.profileImage%>" alt="profile_image" width="75" height="75"></a>
                 </div>
                 <div id="feed_info">
-                    <p id="feed_username"><strong><%= post.username %></strong> </p>
+                    <p id="feed_username"><strong><%= pos.username %></strong> </p>
                     <!--
                                 <%
                                     function timeDifference(current, previous) {
@@ -100,39 +100,37 @@
                                 }
                                 %>
                                 <% var now = new Date();%>
-                                <% var saved = post.date;%>
+                                <% var saved = pos.date;%>
                                 <% var date = timeDifference(now.getTime(), saved.getTime())%>
                              -->
                     <p id="feed_date"><em><%- date %></em></p>
                 </div>
             </div>
-            <%if (post.type == "image"){%>
+            <%if (pos.type == "image"){%>
             <div id="body">
-                <img src="<%= post.image %>" alt="imagen">
+                <img src="<%= pos.image %>" alt="imagen">
             </div>
             <%}%>
         
                     <div id="footer">
                         <div id="description">
-                            <p><%= post.description %></p>
+                            <p><%= pos.description %></p>
         </div>
         <div class="interactions_div">
             <div class="interaction_section">
                 <form action="/" method="post" class="image_comment_form"">
-                                    <input type=" hidden" name="idCommentContainer" id="idCommentContainer"
-                    value="comments_container_<%= post.idPost%>">
-                    <input type="image" src="../imgs/comment.png" alt="Submit Form" width="35" height="35"
-                        id="image_comment_form_<%= post.idPost%>" />
+                    <input type="hidden" name="idCommentContainer" id="idCommentContainer" value="comments_container_<%= pos.idPost%>">
+                    <input type="image" src="../imgs/comment.png" alt="Submit Form" width="35" height="35" id="image_comment_form_<%= pos.idPost%>" />
                 </form>
                 <span>
-                    <p id="num_comments_<%= post.idPost %>"><%= post.comments.length %> Comentarios</p>
+                    <p id="num_comments_<%= pos.idPost %>"><%= pos.comments.length %> Comentarios</p>
                 </span>
             </div>
             <div class="interaction_section">
-                <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
+                <input type="hidden" name="idPost" id="idPost" value="<%= pos.idPost%>">
                 <input type="hidden" name="username" id="username" value="<%= profile.username%>">
                 <% var src = "../imgs/like.png"; %>
-                <% post.likes.forEach(function(like){ %>
+                <% pos.likes.forEach(function(like){ %>
                 <% if (like.username == profile.username){ %>
                 <% src = "../imgs/heart.png";%>
                 <%}else{%>
@@ -140,28 +138,27 @@
                 <%}%>
                                 <%  });%>
                 <form action="/subir-like" method="post" class="like_form"">
-                                    <input type=" hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
+                    <input type="hidden" name="idPost" id="idPost" value="<%= pos.idPost%>">
                     <input type="hidden" name="username" id="username" value="<%= profile.username%>">
-                    <input type="hidden" name="idForm" id="idForm" value="form_<%= post.idPost%>">
+                    <input type="hidden" name="idForm" id="idForm" value="form_<%= pos.idPost%>">
                     <% if (src == "../imgs/heart.png"){ %>
-                    <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/eliminar-like">
+                    <input type="hidden" name="url" id="url_<%= pos.idPost%>" value="/eliminar-like">
                     <%}else{%>
-                    <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/subir-like">
+                    <input type="hidden" name="url" id="url_<%= pos.idPost%>" value="/subir-like">
                     <%}%>
-                                    <input type="image" src="<%- src %>" alt="Submit Form" width="35" height="35"
-                    id="form_<%= post.idPost%>"/>
+                    <input type="image" src="<%- src %>" alt="Submit Form" width="35" height="35" id="form_<%= pos.idPost%>"/>
                 </form>
                 <span>
-                    <p id="num_likes_<%= post.idPost%>"><%= post.likes.length %> Me gusta</p>
+                    <p id="num_likes_<%= pos.idPost%>"><%= pos.likes.length %> Me gusta</p>
                 </span>
             </div>
         </div>
     </div>
-    <div id="comments_container_<%= post.idPost%>" class="comments_div">
+    <div id="comments_container_<%=pos.idPost%>" class="comments_div">
         <div id="comment_title">Comentarios</div>
         <hr class="separador">
         <% var idLastComment="0";%>
-        <% post.comments.forEach(function(comment) {%>
+        <%pos.comments.forEach(function(comment) {%>
         <div id="comments_section_<%= comment.idComment %>" class="comments_section">
             <!--NO BORRAR <%- idLastComment =  comment.idComment %> -->
             <!-- 
@@ -173,14 +170,14 @@
                     id="date"><em><%- dateComment %></em></span></p>
         </div>
         <%});%>
-        <%if (post.comments.length == 0){%>
+        <%if (pos.comments.length == 0){%>
         <div id="comments_section_0" class="comments_section">
         </div>
         <%}%>
                         <form action="/subir-comentario" method="POST" class="new_comment_form">
-                            <input type="text" name="comment" id="text_comment_<%= post.idPost %>"
+                            <input type="text" name="comment" id="text_comment_<%=pos.idPost %>"
         class="text_area_comment"placeholder="Escribe un comentario..." required>
-        <input type="hidden" name="idPost" value="<%= post.idPost %>">
+        <input type="hidden" name="idPost" value="<%= pos.idPost %>">
         <input type="hidden" name="username" value="<%= profile.username %>">
         <input type="hidden" name="idLastComment" value="comments_section_<%- idLastComment %>">
         <input type="image" src="../imgs/send.png" alt="Submit Form" id="button_send_comment" value="Send" width="45"
@@ -188,6 +185,7 @@
         </form>
     </div>
     </div>
+    <% }); %>
     <% }); %>
     </div>
 </body>

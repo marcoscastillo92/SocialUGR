@@ -12,8 +12,9 @@ const username = "pepita"
 
 const storage = multer.diskStorage({
     destination: './public/imgs',
-    filename: function (req, file, cb) {
+    filename: async function (req, file, cb) {
         var name = "image_" + Date.now() + path.extname(file.originalname);
+        // var userData = await Profile.findOne({username: req.user.username})
         cb(null, name)
         const post = new Post({
             username: req.user.username, description: req.body.description,
@@ -52,6 +53,7 @@ router.post('/subir-post-multimedia', async (req, res) => {
 });
 
 router.post('/subir-post', async (req, res) => {
+    // var userData = await Profile.findOne({username: req.user.username})
     const post = new Post({
         username: req.body.username, description: req.body.description,
         date: Date.now(), idPost: req.body.username + Date.now(), likes: [], comments: [], image: "unknown",
@@ -131,14 +133,28 @@ router.get('/feed/:username', isLoggedIn, async function (req, res) {
     const profile = await Profile.findOne({ username: req.user.username })
     var posts = new Array();
     var following = profile.following;
-   
     for (fol in following) {
-        posts[fol] = (await Post.find({ username: following[fol].username }));
-        posts[fol].profileImage = following[fol].image;
-        console.log(posts[fol]);
-        //posts[fol].sort({ date: "desc" });
+        var postsFromUser = (await Post.find({ username: following[fol].username }));
+        for (pos in postsFromUser){
+            const user = await Profile.findOne({username: postsFromUser[pos].username})
+            postsFromUser[pos].profileImage = user.image
+            posts.push(postsFromUser[pos])
+        }
     }
-    
+
+    var postsFromProfile = (await Post.find({ username: req.user.username }));
+        for (pos in postsFromProfile){
+            const user = await Profile.findOne({username: postsFromProfile[pos].username})
+            postsFromProfile[pos].profileImage = user.image
+            posts.push(postsFromProfile[pos])
+        }
+
+    posts.sort((a,b) => {
+        if(a.date > b.date)
+            return -1;
+        else 
+            return 1;
+    })
     res.render('feed', { posts: posts, profile: profile });
 });
 

@@ -197,8 +197,12 @@ hr{
 .text_area_comment{
     font-size: 15px;
     padding: 10px;
-    width: 90%;
+    width: 88%;
     height: 20px;
+}
+
+.textoPost{
+    width: 100%;
 }
 
 #button_send_comment{

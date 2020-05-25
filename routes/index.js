@@ -5,7 +5,7 @@ const passport = require('passport');
 const Perfil = require('../models/Profile');
 const User = require('../models/user');
 
-router.get('/', (req, res, next) => {
+router.get('/', isSesionActive, (req, res, next) => {
     const nameMessage = req.flash('nameError')[0];
     const lastNameMessage = req.flash('lastNameError')[0];
     const usernameMessage = req.flash('usernameError')[0];
@@ -91,18 +91,13 @@ function isLoggedIn(req, res, next) {
     }
     return res.redirect('/');
 }
-/*
-router.get('/feed', isLoggedIn, (req, res, next) => {
-    res.render('feed', {
-        user: req.user
-    });
-});
 
-router.get('/perfil', isLoggedIn, (req, res, next) => {
-    res.render('perfil', {
-        user: req.user
-    });
-});*/
+function isSesionActive(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect('/feed');
+    }
+    return next();
+}
 
 router.get('/feed', isLoggedIn, (req, res, next) => {
     res.redirect('/feed/' + req.user.username);

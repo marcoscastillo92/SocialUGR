@@ -158,6 +158,35 @@ router.get('/feed/:username', isLoggedIn, async function (req, res) {
     res.render('feed', { posts: posts, profile: profile });
 });
 
+router.get('/posts', async function (req, res) {
+    const profile = await Profile.findOne({ username: "marcos" })
+    var posts = new Array();
+    var following = profile.following;
+    for (fol in following) {
+        var postsFromUser = (await Post.find({ username: following[fol].username }));
+        for (pos in postsFromUser){
+            const user = await Profile.findOne({username: postsFromUser[pos].username})
+            postsFromUser[pos].profileImage = user.image
+            posts.push(postsFromUser[pos])
+        }
+    }
+
+    var postsFromProfile = (await Post.find({ username: "marcos" }));
+        for (pos in postsFromProfile){
+            const user = await Profile.findOne({username: postsFromProfile[pos].username})
+            postsFromProfile[pos].profileImage = user.image
+            posts.push(postsFromProfile[pos])
+        }
+
+    posts.sort((a,b) => {
+        if(a.date > b.date)
+            return -1;
+        else 
+            return 1;
+    })
+    res.send((posts));
+});
+
 router.get('/profile-add', async function (req, res) {
     const followers = 13;
     const following = 1;

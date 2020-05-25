@@ -4,6 +4,7 @@ const passport = require('passport');
 
 const Perfil = require('../models/Profile');
 const User = require('../models/user');
+const Authentication = require('../models/Authentication');
 
 router.get('/', isSesionActive, (req, res, next) => {
     const nameMessage = req.flash('nameError')[0];
@@ -37,6 +38,9 @@ router.post('/signup', passport.authenticate('local-signup', {
 
 router.post('/perfilNuevo', async (req, res) => {
     const { name, lastName, username, birthDate, gender, email }= req.body;
+    const auth = new Authentication({username: username});
+    console.log("AUTHENTICATION: "+auth)
+    await auth.save();
     var error = false;
 
     if (!username) {
@@ -105,6 +109,17 @@ router.get('/feed', isLoggedIn, (req, res, next) => {
 
 router.get('/profile', isLoggedIn, (req, res, next) => {
     res.redirect('/profile/' + req.user.username);
+});
+
+router.post('/login_mobile', async function(req, res){
+    const user = await User.findOne({ username: req.body.username });
+    
+    if (!user.validaPassword(req.body.password) || !user) {
+        res.send("{}");
+    }else{
+        const auth = await Authentication.findOne({username: req.body.username});
+        res.send(auth);
+    }
 });
 
 module.exports = router;

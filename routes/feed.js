@@ -7,6 +7,7 @@ const Post = require('../models/Post');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment.js');
 const User = require('../models/user')
+const Authentication = require('../models/Authentication');
 
 const username = "pepita"
 
@@ -158,33 +159,42 @@ router.get('/feed/:username', isLoggedIn, async function (req, res) {
     res.render('feed', { posts: posts, profile: profile });
 });
 
-router.get('/posts', async function (req, res) {
-    const profile = await Profile.findOne({ username: "marcos" })
-    var posts = new Array();
-    var following = profile.following;
-    for (fol in following) {
-        var postsFromUser = (await Post.find({ username: following[fol].username }));
-        for (pos in postsFromUser){
-            const user = await Profile.findOne({username: postsFromUser[pos].username})
-            postsFromUser[pos].profileImage = user.image
-            posts.push(postsFromUser[pos])
-        }
-    }
+    router.post('/posts', async function (req, res) {
+        const auth = await Authentication.findOne({_id: req.body.token});
+        if(auth){
+            const profile = await Profile.findOne({ username: req.body.username })
+            if(profile){
+                var posts = new Array();
+                var following = profile.following;
+                for (fol in following) {
+                    var postsFromUser = (await Post.find({ username: following[fol].username }));
+                    for (pos in postsFromUser){
+                        const user = await Profile.findOne({username: postsFromUser[pos].username})
+                        postsFromUser[pos].profileImage = user.image
+                        posts.push(postsFromUser[pos])
+                    }
+                }
 
-    var postsFromProfile = (await Post.find({ username: "marcos" }));
-        for (pos in postsFromProfile){
-            const user = await Profile.findOne({username: postsFromProfile[pos].username})
-            postsFromProfile[pos].profileImage = user.image
-            posts.push(postsFromProfile[pos])
-        }
+                var postsFromProfile = (await Post.find({ username: req.body.username }));
+                    for (pos in postsFromProfile){
+                        const user = await Profile.findOne({username: postsFromProfile[pos].username})
+                        postsFromProfile[pos].profileImage = user.image
+                        posts.push(postsFromProfile[pos])
+                    }
 
-    posts.sort((a,b) => {
-        if(a.date > b.date)
-            return -1;
-        else 
-            return 1;
-    })
-    res.send((posts));
+                posts.sort((a,b) => {
+                    if(a.date > b.date)
+                        return -1;
+                    else 
+                        return 1;
+                })
+                res.send((posts));
+            }else{
+                res.send("No exite el usuario");
+            }
+        }else{
+            res.send("No autorizado");
+        }
 });
 
 router.get('/profile-add', async function (req, res) {

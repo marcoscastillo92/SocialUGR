@@ -8,6 +8,7 @@ const Post = require('../models/Post');
 const Comment = require('../models/Comment.js');
 const User = require('../models/user.js');
 const Like = require('../models/Like.js');
+const Authentication = require('../models/Authentication');
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -174,6 +175,16 @@ router.post('/add-img-profile', async function (req, res) {
             res.redirect('profile/' + req.body.usernameImgPerfil);
         }
     });
+});
+
+router.post('/get_profile/:username', async function(req,res){
+    const auth = await Authentication.findOne({username: req.body.username});
+    if(req.body.token == auth._id){
+        const perfil = await Profile.findOne({username: req.params.username});
+        res.send(perfil);
+    }else{
+        res.send("No autorizado");
+    }
 });
 
 const storage = multer.diskStorage({

@@ -177,10 +177,10 @@ router.post('/add-img-profile', async function (req, res) {
     });
 });
 
-router.post('/get_profile/:username', async function(req,res){
+router.post('/get_profile/', async function(req,res){
     const auth = await Authentication.findOne({username: req.body.username});
     if(req.body.token == auth._id){
-        const perfil = await Profile.findOne({username: req.params.username});
+        const perfil = await Profile.findOne({username: req.body.usernameProfile});
         res.send(perfil);
     }else{
         res.send("No autorizado");

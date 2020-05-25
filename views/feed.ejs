@@ -170,7 +170,7 @@
                                     <% var saved = comment.date;%>
                                     <% var dateComment = timeDifference(now.getTime(), saved.getTime())%>
                                  -->
-            <p><strong><%= comment.username %>: </strong> <%= comment.comment %><br><span
+            <p><strong><a href="/profile/<%=comment.username%>"><%= comment.username %></a>: </strong> <%= comment.comment %><br><span
                     id="date"><em><%- dateComment %></em></span></p>
         </div>
         <%});%>

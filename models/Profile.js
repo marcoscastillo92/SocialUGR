@@ -11,7 +11,7 @@ const profileSchema = new mongoose.Schema({
     followers: Array,
     username: String,
     email: String,
-    image: { type: String, default: "/imgs/perfil.jpg" },
+    image: { type: String, default: "/imgs/perfil2.jpg" },
     landscape: { type: String, default: "/imgs/paisaje.jpg" }
 });
 

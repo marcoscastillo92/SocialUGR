@@ -122,4 +122,64 @@ router.post('/login_mobile', async function(req, res){
     }
 });
 
+router.post('/signup_mobile', async function (req, res) {
+    const { name, lastName, username, birthDate, gender, email, password } = req.body;
+    var error = false;
+
+    if (!username) {
+        res.send("Introduce un usuario");
+    }
+    else {
+        const user = await User.findOne({ username: req.body.username });
+
+        if (user) {
+            error = true;
+            res.send("El usuario ya existe");
+        }
+        if (!name) {
+            error = true;
+            res.send("Introduce un nombre");
+        }
+        if (!lastName) {
+            error = true;
+            res.send("Introduce un apellido");
+        }
+        if (!birthDate) {
+            error = true;
+            res.send("Introduce la fecha de nacimiento");
+        }
+        if (!gender) {
+            error = true;
+            res.send("Introduce tu genero");
+        }
+        if (!email) {
+            error = true;
+            res.send("Introduce tu correo");
+        }
+        if (!password) {
+            error = true;
+            res.send("Introduce una contraseña");
+        }
+
+        if (error) {
+            res.send("Error");
+        }
+        else {
+            const newProfile = new Perfil({ name, lastName, birthDate, gender, username, email });
+            await newProfile.save();
+
+            const newUser = new User();
+            newUser.username = username;
+            newUser.password = newUser.encriptaHash(password);
+            await newUser.save();
+
+            const auth = new Authentication({ username: username });
+            await auth.save();
+
+            res.send(auth);
+        }
+
+    }
+});
+
 module.exports = router;

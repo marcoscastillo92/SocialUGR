@@ -1,0 +1,220 @@
+.bloque{
+    border-style: solid;
+    border-color: #53abff;
+    border-width: 2px;
+    margin-left: 26%;
+    margin-right: 26%;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#body img{
+    width: 97%;
+    display: block;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.2);
+    border-width: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+}
+
+#header{
+    margin-top: 10px;
+    text-align: left;
+    /* border-style: solid;
+    border-color: rgba(0,0,0,0.2);
+    border-width: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px; */
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+#profile_image{
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+#feed_info{
+    margin-left: 10px;
+    display: inline-block;
+    position: absolute;
+}
+
+#feed_username {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+#feed_date {
+    padding-top: 0px;
+    font-size: 15px;
+}
+
+#profile_image img{
+    padding: 2px;
+    margin: 10px;
+    border-style: solid;
+    border-color: #53abff;
+    border-width: 1px;
+    border-radius: 100px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+} 
+
+#description{
+    margin-left: 10px;
+    margin-right: 10px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.2);
+    border-width: 2px;
+    border-radius: 10px;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.interaction_section{
+    display: inline-block;
+    text-align: center;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.2);
+    border-width: 2px;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    margin-left: 10px;
+}
+
+.interaction_section{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0px;
+}
+
+.interaction_section span{
+    padding: 0px;
+}
+
+#new_post_container, #new_post_container_multimedia{
+    border-style: solid;
+    border-color: #53abff;
+    border-width: 2px;
+    margin-left: 26%;
+    margin-right: 26%;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#post_form{
+    padding: 10px;
+    text-align: center;
+}
+
+#post_title{
+    color: #53abff;
+    font-size: 35px;
+    padding: 10px;
+    text-align: center;
+    text-shadow: 2px 1px #53abff;
+}  
+
+hr{
+    color: #53abff;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button {
+    background-color: dodgerblue;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: dodgerblue;
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.comments_section{
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 10px;
+}
+
+.comments_section p{
+    border-style: solid;
+    border-top-color: white;
+    border-right-color: white;
+    border-bottom-color: white;
+    border-left-color: #53abff;
+    padding: 10px;
+}
+
+.comments_section #date{
+    font-size: 10px;
+    padding-top: 10px;
+}
+
+.interactions_div{
+    margin-bottom: 10px;
+}
+
+#comment_title{
+    color: #53abff;
+    font-size: 25px;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin-bottom: 0px;
+}  
+
+.new_comment_form{
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.text_area_comment{
+    font-size: 15px;
+    padding: 10px;
+    width: 88%;
+    height: 20px;
+}
+
+.textoPost{
+    width: 100%;
+}
+
+#button_send_comment{
+    margin-bottom: -18px;
+}
+
+#button_comment{
+    font-size: 20px;
+}
+
+#crear_post_container{
+    /* margin-bottom: 0px; */
+    text-align: center;
+    /* background-color: rebeccapurple; */
+}

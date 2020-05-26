@@ -25,7 +25,7 @@ body {
     margin-bottom: 20%;
     text-align: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-image: url('../imgs/estudiantes.jpg');
+    background-image: url('../../imgs/estudiantes.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -107,6 +107,15 @@ section{
    color: #53abff;
    font-size: 25px;
    text-shadow: 2px 1px grey;
+}
+
+.mensajeError {
+    border-radius: 10px;
+    padding: 0.3em;
+    color: #D8000C;
+    background-color: #FFD2D2;
+    box-shadow:1px 1px 3px #888;
+    width: fit-content;
 }
 
 section input{

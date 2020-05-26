@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../public/scripts/script.js"></script>
+    <link rel="stylesheet" href="../public/css/perfil.css">
+    <link rel="stylesheet" href="../public/css/feed.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../public/scripts/feed.js"></script>
+    <title>SocialUGR</title>
+</head>
+
+<body>
+    <div class="contenedor">
+        <%- include('layouts/header'); %>
+        <div id="fantasma">
+            No debe verse
+        </div>
+        <div id="crear_post_container">
+            <button class="button" onclick="showCreatePostText()">
+                Nuevo Post Textual
+            </button>
+            <button class="button" onclick="showCreatePostMultimedia()">
+                Nuevo Post Multimedia
+            </button>
+        </div>
+        <br>
+        <div id="new_post_container">
+            <div id="post_title">Nuevo Post Textual</div>
+            <hr class="separador">
+            <form id="post_form" action="/subir-post" method="POST">
+                <div class="textoPost"><textarea name="description" id="description_t" cols="80" rows="10" placeholder="Cuéntale algo a tus amigos!"></textarea></div>
+                <br><br>
+                <input type="hidden" name="username" value="<%=profile.username%>">
+                <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
+            </form>
+        </div>
+        <div id="new_post_container_multimedia">
+            <div id="post_title">Nuevo Post Multimedia</div>
+            <hr class="separador">
+            <form id="post_form" action="/subir-post-multimedia" method="POST" enctype="multipart/form-data">
+                <span><textarea name="description" id="description_m" cols="80" rows="10"
+                        placeholder="Cuéntale algo a tus amigos!"></textarea></span>
+                <!-- <button class="button" id="bt_send_post" onclick="checkpostStatus()">Envia Comentario</button> -->
+                <br><br>
+                Añade una imagen: <br>
+                <input type="file" name="post-image" class="button"><br>
+                <input type="hidden" name="username" value="<%=profile.username%>">
+                <br>
+                <input type="submit" value="Publicar Post" id="bt_send_post" class="button">
+            </form>
+        </div>
+        <% posts.forEach(function(post){ %>
+        <div class="bloque">
+            <div id="header">
+                <div id="profile_image">
+                    <a href="/profile/<%=post.username%>"><img src="<%=post.profileImage%>" alt="profile_image"
+                            width="75" height="75"></a>
+                </div>
+                <div id="feed_info">
+                    <p id="feed_username"><strong><%= post.username %></strong> </p>
+                    <!--
+                                <%
+                                    function timeDifference(current, previous) {
+
+                                    var msPerMinute = 60 * 1000;
+                                    var msPerHour = msPerMinute * 60;
+                                    var msPerDay = msPerHour * 24;
+                                    var msPerMonth = msPerDay * 30;
+                                    var msPerYear = msPerDay * 365;
+
+                                    var elapsed = current - previous;
+
+                                    if (elapsed < msPerMinute) {
+                                        return 'Hace '+Math.round(elapsed/1000) + ' segundos';   
+                                    }
+
+                                    else if (elapsed < msPerHour) {
+                                        return 'Hace ' + Math.round(elapsed/msPerMinute) + ' minutos';   
+                                    }
+
+                                    else if (elapsed < msPerDay ) {
+                                        return 'Hace ' + Math.round(elapsed/msPerHour ) + ' Horas';   
+                                    }
+
+                                    else if (elapsed < msPerMonth) {
+                                        return 'Aproximadamente hace ' + Math.round(elapsed/msPerDay) + ' días';   
+                                    }
+
+                                    else if (elapsed < msPerYear) {
+                                        return 'Aproximadamente hace ' + Math.round(elapsed/msPerMonth) + ' meses';   
+                                    }
+
+                                    else {
+                                        return 'Aproximadamente hace ' + Math.round(elapsed/msPerYear ) + ' años';   
+                                    }
+                                }
+                                %>
+                                <% var now = new Date();%>
+                                <% var saved = post.date;%>
+                                <% var date = timeDifference(now.getTime(), saved.getTime())%>
+                             -->
+                    <p id="feed_date"><em><%- date %></em></p>
+                </div>
+            </div>
+            <%if (post.type == "image"){%>
+            <div id="body">
+                <img src="<%= post.image %>" alt="imagen">
+            </div>
+            <%}%>
+        
+                    <div id="footer">
+                        <div id="description">
+                            <p><%= post.description %></p>
+        </div>
+        <div class="interactions_div">
+            <div class="interaction_section">
+                <form action="/" method="post" class="image_comment_form"">
+                    <input type="hidden" name="idCommentContainer" id="idCommentContainer"
+                    value="comments_container_<%= post.idPost%>">
+                    <input type="image" src="../imgs/comment.png" alt="Submit Form" width="35" height="35"
+                        id="image_comment_form_<%= post.idPost%>" />
+                </form>
+                <span>
+                    <p id="num_comments_<%= post.idPost %>"><%= post.comments.length %> Comentarios</p>
+                </span>
+            </div>
+            <div class="interaction_section">
+                <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
+                <input type="hidden" name="username" id="username" value="<%= profile.username%>">
+                <% var src = "../imgs/like.png"; %>
+                <% var existe = 0; %>
+                <% post.likes.forEach(function(like){ %>
+                <% if (like.username == profile.username && existe == 0){ %>
+                <% src = "../imgs/heart.png";%>
+                <% existe = 1; %>
+                <%}else if (existe == 0){%>
+                <% src = "../imgs/like.png";%>
+                <%}%>
+                <%  });%>
+                <form action="/subir-like" method="post" class="like_form"">
+                    <input type="hidden" name="idPost" id="idPost" value="<%= post.idPost%>">
+                    <input type="hidden" name="username" id="username" value="<%= profile.username%>">
+                    <input type="hidden" name="idForm" id="idForm" value="form_<%= post.idPost%>">
+                    <% if (src == "../imgs/heart.png"){ %>
+                    <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/eliminar-like">
+                    <%}else{%>
+                    <input type="hidden" name="url" id="url_<%= post.idPost%>" value="/subir-like">
+                    <%}%>
+                    <input type="image" src="<%- src %>" alt="Submit Form" width="35" height="35"
+                    id="form_<%= post.idPost%>"/>
+                </form>
+                <span>
+                    <p id="num_likes_<%= post.idPost%>"><%= post.likes.length %> Me gusta</p>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="comments_container_<%=post.idPost%>" class="comments_div">
+        <div id="comment_title">Comentarios</div>
+        <hr class="separador">
+        <% var idLastComment="0_"+post.idPost;%>
+        <%post.comments.forEach(function(comment) {%>
+        <div id="comments_section_<%= comment.idComment %>" class="comments_section">
+            <!--NO BORRAR <%- idLastComment =  comment.idComment %> -->
+            <!-- 
+                                    <% var now = new Date();%>
+                                    <% var saved = comment.date;%>
+                                    <% var dateComment = timeDifference(now.getTime(), saved.getTime())%>
+                                 -->
+            <p><strong><a href="/profile/<%=comment.username%>"><%= comment.username %></a>: </strong> <%= comment.comment %><br><span
+                    id="date"><em><%- dateComment %></em></span></p>
+        </div>
+        <%});%>
+        <%if (post.comments.length == 0){%>
+        <div id="comments_section_0_<%=post.idPost%>" class="comments_section">
+        </div>
+        <%}%>
+                        <form action="/subir-comentario" method="POST" class="new_comment_form">
+                            <input type="text" name="comment" id="text_comment_<%=post.idPost %>"
+        class="text_area_comment"placeholder="Escribe un comentario..." required>
+        <input type="hidden" name="idPost" value="<%= post.idPost %>">
+        <input type="hidden" name="username" value="<%= profile.username %>">
+        <input type="hidden" name="idLastComment" value="comments_section_<%- idLastComment %>">
+        <input type="image" src="../imgs/send.png" alt="Submit Form" id="button_send_comment" value="Send" width="45" height="45">
+        </form>
+    </div>
+    </div>
+    <% }); %>
+    </div>
+</body>
+
+</html>
